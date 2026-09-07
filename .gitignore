@@ -3,3 +3,7 @@ package-lock.json
 /migrations
 /uploads
 .env
+.env.*
+!.env.example
+dist/
+build/
