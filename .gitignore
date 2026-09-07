@@ -7,3 +7,4 @@ package-lock.json
 !.env.example
 dist/
 build/
+public/assets/js/pages/leaflet-map.init.js
