@@ -1,0 +1,237 @@
+<%- contentFor('HeaderCss') %>
+    <%- contentFor('body') %>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+                    <form action="/products/create" id="serviceForm" method="post" onsubmit="updateContent(event);" enctype="multipart/form-data">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#productContent" role="tab">
+                                            <i class="ri-pages-line align-middle me-1"></i> Product Content
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#features" role="tab">
+                                            <i class="ri-list-check align-middle me-1"></i> Features
+                                        </a>
+                                    </li>
+                                    <!-- <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#benefits" role="tab">
+                                            <i class="ri-list-check align-middle me-1"></i> Benefits
+                                        </a>
+                                    </li> -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#faq" role="tab">
+                                            <i class="ri-question-line align-middle me-1"></i> FAQ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#images" role="tab">
+                                            <i class="ri-image-line align-middle me-1"></i> Images
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#seo" role="tab">
+                                            <i class="ri-file-search-line align-middle me-1"></i> SEO
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="productContent" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="mb-3">
+                                                    <div class="card-body border">
+                                                        <div class="row gy-4">
+                                                            <div class="col-md-6">
+                                                                <label for="title" class="form-label">Product Title</label>
+                                                                <input type="text" class="form-control" id="title" name="title" required>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label for="slug" class="form-label">Slug</label>
+                                                                <input type="text" class="form-control" id="slug" name="slug" required>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label for="viewDemo" class="form-label">Demo Link</label>
+                                                                <input type='url' class="form-control" id="viewDemo" name="viewDemo" required>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="coverImage" class="form-label">Cover
+                                                                    Image</label>
+                                                                <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)" required>
+                                                                <img id="imagePreview" src="#" alt="Image Preview" class="d-none mt-2 w-25 img-fluid" />
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="description" class="form-label">Description</label>
+                                                                <textarea name="description" id="description" class="form-control" rows="5"></textarea>
+                                                            </div>
+                                                            <div class="col-12 mb-3">
+                                                                <label for="content" class="form-label">Content</label>
+                                                                <textarea id="content" name="content"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="features" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <fieldset>
+                                                    <legend>Features</legend>
+                                                    <div id="featureFields">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="button" class="btn btn-soft-primary waves-effect col-md-12" onclick="addFeature()">Add New Feature Item</button>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="benefits" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <fieldset>
+                                                    <legend>Benefits</legend>
+                                                    <div id="benefitFields">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="button" class="btn btn-soft-primary waves-effect col-md-12" onclick="addBenefits()">Add Benefits Item</button>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="images" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <label for="productImages" class="form-label">Product
+                                                                Images</label>
+                                                            <input type="file" class="form-control" id="productImages" name="productImages" accept="image/*" multiple onchange="previewMultipleImages(event)">
+                                                            <div id="imagePreviewContainer" class="row mt-3">
+                                                            </div>
+                                                        </div>
+                                                        <div id="imageDetailsContainer">
+                                                            <!-- Image details will be added here dynamically -->
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="alert alert-info">
+                                                                <small>
+                                                                    All images will be used as product preview images.
+                                                                    For each image, you can specify an alt text and sort
+                                                                    order.
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <template id="imageDetailsTemplate">
+                                                            <div class="col-12 mb-3 image-details">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="row">
+                                                                            <div class="col-md-8">
+                                                                                <label class="form-label">Alt
+                                                                                    Text</label>
+                                                                                <input type="text" class="form-control" name="imageAltTexts[]" required>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <label class="form-label">Sort
+                                                                                    Order</label>
+                                                                                <input type="number" class="form-control" name="imageSortOrders[]" min="0" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="faq" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <fieldset>
+                                                    <legend>Frequently Asked Questions</legend>
+                                                    <div id="faqFields">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="button" class="btn btn-soft-primary waves-effect col-md-12" onclick="addFAQ()">Add New FAQ Item</button>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="seo" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="card-body">
+                                                    <div class="row gy-4">
+                                                        <div class="col-md-6">
+                                                            <label for="seoTitle" class="form-label">SEO Title</label>
+                                                            <input type="text" class="form-control" id="seoTitle" name="seoTitle">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="canonicalUrl" class="form-label">Canonical
+                                                                URL</label>
+                                                            <input type="url" class="form-control" id="canonicalUrl" name="canonicalUrl">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="robots" class="form-label">Robots</label>
+                                                            <textarea class="form-control" id="robots" name="robots" rows="2"></textarea>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="keywords" class="form-label">Keywords</label>
+                                                            <textarea class="form-control" id="keywords" name="keywords" rows="2"></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="seoDescription" class="form-label">SEO
+                                                                Description</label>
+                                                            <textarea class="form-control" id="seoDescription" name="seoDescription" rows="3"></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="schema" class="form-label">Schema</label>
+                                                            <textarea class="form-control" id="schema" name="schema" rows="7" placeholder="Enter your JSON-LD or other schema markup here"></textarea>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-body -->
+                        </div><!-- end card -->
+
+                        <div class="card card-body">
+                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+                        </div>
+                    </form>
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>
+            <script src="/assets/js/main/tinymce.js"></script>
+            <script src="/assets/js/_products/features.js"></script>
+            <script src="/assets/js/_products/benefits.js"></script>
+            <script src="/assets/js/main/addCommon.js"></script>
+            <script src="/assets/js/main/multiImagePreview.js"></script>

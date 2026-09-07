@@ -1,0 +1,75 @@
+<%- contentFor('HeaderCss') %>
+    <%- contentFor('body') %>
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+                    <form action="/artist/update/<%=artist.id%>" method="post" enctype="multipart/form-data">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1 ms-2">
+                                        <div class="mb-3">
+                                            <div class="card-body">
+                                                <div class="row gy-4">
+                                                    <div class="col-md-6">
+                                                        <label for="name" class="form-label">Name</label>
+                                                        <input type="text" class="form-control" id="name" name="name" value="<%= artist.name%>">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="slug" class="form-label">Slug</label>
+                                                        <input type="text" class="form-control" id="slug" name="slug" value="<%= artist.slug%>">
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="bio" class="form-label">Bio</label>
+                                                        <textarea name="bio" id="bio" class="form-control" rows="5"><%=artist.bio%></textarea>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="genre" class="form-label">Genre</label>
+                                                        <textarea name="genre" id="genre" class="form-control" rows="5"><%=artist.genre%></textarea>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="coverImage" class="form-label">Image</label>
+                                                        <input type="file" class="form-control" id="coverImage" name="image" accept="image/*" onchange="previewImage(event)">
+                                                        <img id="imagePreview" src="#" alt="Image Preview" height="100px" width="100px" class="d-none mt-2 img-fluid" />
+                                                    </div>
+                                                    <div class="d-flex flex-column gap-8">
+                                                        <label for="coverImage" class="form-label">Current Image</label>
+                                                        <img src="/<%=artist.image%>" alt="" height="100px" width="100px" class="img-fluid">
+                                                    </div>
+                                                    <div class="col-12 gap-8">
+                                                        <label for="coverImage"
+                                                            class="form-label">CoverImage</label>
+                                                        <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*" onchange="previewCoverImage(event)">
+                                                        <img id="coverImagePreview" src="#" alt="Image Preview" class="d-none mt-2 w-25 img-fluid" />
+                                                    </div>
+                                                    <div class="d-flex flex-column gap-8">
+                                                        <label for="coverImage" class="form-label">Current Cover Image</label>
+                                                        <img src="/<%=artist.coverImage%>" alt="" height="100px"
+                                                            width="100px" class="img-fluid w-25">
+                                                    </div>
+
+
+                                                    <div class="col-12">
+                                                        <label for="content" class="form-label">Content</label>
+                                                        <textarea name="content" id="content" class="form-control"
+                                                            rows="5"><%=artist.content%></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- end card-body -->
+                        </div><!-- end card -->
+
+                        <div class="card card-body">
+                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+                        </div>
+                    </form>
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>
+            <script src="/assets/js/main/tinymce.js"></script>
+            <script src="/assets/js/main/addCommon.js"></script>

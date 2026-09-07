@@ -1,0 +1,70 @@
+<%- contentFor('HeaderCss') %>
+    <!-- quill css -->
+    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+<%- contentFor('body') %>
+
+<div class="row">
+    <div class="col-xl-12">
+        <%- include ('../partials/messages') %>
+        <form action="/blogs/categories/create" id="serviceForm" method="post" onsubmit="updateContent(event);">
+
+            <div class="card">
+                <div class="card-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#content" role="tab">
+                                <i class="ri-pages-line align-middle me-1"></i> Content
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="content" role="tabpanel">
+                            <div class="d-flex">
+                                <div class="flex-grow-1 ms-2">
+                                    <div class="mb-3">
+                                        <div class="card-body">
+                                            <div class="row gy-4">
+                                                <div class="col-md-6">
+                                                    <label for="title" class="form-label">Title</label>
+                                                    <input type="text" class="form-control" id="title" name="title" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="slug" class="form-label">Slug</label>
+                                                    <input type="text" class="form-control" id="slug" name="slug" required>
+                                                </div>
+                                                <div class="col-12 mb-3">
+                                                    <input type="hidden" id="editorContent" name="content">
+                                                    <label for="content" class="form-label">Content</label>
+                                                    <div class="border rounded">
+                                                        <div class="snow-editor" id="snow-editor" style="min-height: 200px;"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div><!-- end card-body -->
+            </div><!-- end card -->
+
+            <div class="card card-body">
+                <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+            </div>
+        </form>
+    </div><!-- end col -->
+</div><!-- end row -->
+
+<%- contentFor('FooterJs') %>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-uploader@1.2.2/dist/quill.imageUploader.min.js"></script>
+    <script src="/assets/js/main/quillInit.js"></script>
+    <script src="/assets/js/main/addCommon.js"></script>

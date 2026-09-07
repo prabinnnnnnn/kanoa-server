@@ -1,0 +1,279 @@
+<%- contentFor('HeaderCss') %>
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <%- contentFor('body') %>
+        <div class="row">
+            <div class="col-lg-12">
+                <%- include ('../partials/messages') %>
+                    <div class="card" id="customerList">
+                        <div class="card-header border-bottom-dashed">
+
+                            <div class="row g-4 align-items-center">
+                                <div class="col-sm">
+                                    <div>
+                                        <h5 class="card-title mb-0">
+                                            <%=page_title%>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div class="d-flex flex-wrap align-items-start gap-2">
+                                        <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                                        <a class="btn btn-primary" href="https://webmail.kathmanduinfotech.com" target="_blank">Visit WebMail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body border-bottom-dashed border-bottom">
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-xl-6">
+                                        <div class="search-box">
+                                            <input type="text" class="form-control search" placeholder="Search here...">
+                                            <i class="ri-search-line search-icon"></i>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-xl-6">
+                                        <div class="row g-3">
+                                            <div class="col-sm-4">
+
+                                            </div>
+                                            <!--end col-->
+
+                                            <div class="col-sm-4">
+                                            </div>
+                                            <!--end col-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end row-->
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <div class="table-responsive table-card mb-1">
+                                    <table class="table align-middle" id="customerTable">
+                                        <thead class="table-light text-muted">
+                                            <tr>
+                                                <th scope="col" style="width: 50px;">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                                    </div>
+                                                </th>
+
+                                                <th class="sort" data-sort="name">Name</th>
+                                                <th class="sort" data-sort="email">Email</th>
+                                                <th class="sort" data-sort="phone">Phone</th>
+                                                <th class="sort" data-sort="isResolved">Resolved</th>
+                                                <th class="sort" data-sort="product">Product</th>
+                                                <th class="sort" data-sort="message">Message</th>
+                                                <th class="sort" data-sort="action">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list form-check-all">
+                                            <% if (contactRequests.length> 0) { %>
+                                                <% contactRequests.forEach(contactRequest=> { %>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
+                                                            </div>
+                                                        </th>
+                                                        <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">#VZ2101</a></td>
+                                                        <td class="name">
+                                                            <%= contactRequest.name %>
+                                                        </td>
+                                                        <td class="email">
+                                                            <%= contactRequest.email %>
+                                                        </td>
+                                                        <td class="phone">
+                                                            <%= contactRequest.phone %>
+                                                        </td>
+                                                        <td class="isResolved <%= contactRequest.isResolved ? 'text-success' : 'text-danger' %>">
+                                                            <%= contactRequest.isResolved ? 'Yes' : 'No' %>
+                                                        </td>
+                                                        <td class="createdAt">
+                                                            <%= contactRequest.product %>
+                                                        </td>
+                                                        <td class="message">
+                                                            <% if (contactRequest.message.length> 50) { %>
+                                                                <%= contactRequest.message.substring(0, 50) %>...
+                                                                    <% } else { %>
+                                                                        <%= contactRequest.message %>
+                                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <ul class="list-inline hstack gap-2 mb-0">
+                                                                <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+                                                                    <a class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" href="#updateContactRequestModal" data-id="<%= contactRequest.id %>" data-name="<%= contactRequest.name %>" data-email="<%= contactRequest.email %>" data-phone="<%= contactRequest.phone %>" data-message="<%= contactRequest.message %>" data-is-resolved="<%= contactRequest.isResolved %>">
+                                                                        <i class="ri-pencil-fill fs-16"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
+                                                                    <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" data-id="<%= contactRequest.id %>" href="#deleteRecordModal">
+                                                                        <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="6" class="text-center">No contact requests found</td>
+                                                            </tr>
+                                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                    <div class="noresult" style="display: none">
+                                        <div class="text-center">
+                                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                                            <h5 class="mt-2">Sorry! No Result Found</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <div class="pagination-wrap hstack gap-2">
+                                        <a class="page-item pagination-prev disabled" href="#">
+                                            Previous
+                                        </a>
+                                        <ul class="pagination listjs-pagination mb-0"></ul>
+                                        <a class="page-item pagination-next" href="#">
+                                            Next
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" id="deleteRecord-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mt-2 text-center">
+                                                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                                    <h4>Are you sure ?</h4>
+                                                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this record ?</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                                                <form action="" method="POST" id="deleteForm">
+                                                    <button type="submit" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end modal -->
+
+                            <div class="modal fade" id="updateContactRequestModal" tabindex="-1" aria-labelledby="updateContactRequestModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateContactRequestModalLabel">Update Contact Request</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/products/booking-request/update" method="POST" id="updateContactRequestForm">
+                                                <input type="hidden" id="updateContactRequestId" name="id">
+                                                <div class="mb-3">
+                                                    <label for="updateName" class="form-label">Name</label>
+                                                    <input type="text" class="form-control" id="updateName" name="name" disabled>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="updateEmail" class="form-label">Email</label>
+                                                    <input type="text" class="form-control" id="updateEmail" name="email" disabled>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="updatePhone" class="form-label">Phone</label>
+                                                    <input type="text" class="form-control" id="updatePhone" name="phone" disabled>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="updateIsResolved" class="form-label">Resolved</label>
+                                                    <select class="form-select" id="updateIsResolved" name="isResolved" required>
+                                                        <% if (typeof contactRequest !=='undefined' && contactRequest) { %>
+                                                            <option value="true" <%=contactRequest.isResolved ? 'selected' : '' %>>Yes</option>
+                                                            <option value="false" <%=!contactRequest.isResolved ? 'selected' : '' %>>No</option>
+                                                            <% } else { %>
+                                                                <option value="true">Yes</option>
+                                                                <option value="false">No</option>
+                                                                <% } %>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="updateMessage" class="form-label">Message</label>
+                                                    <textarea class="form-control" id="updateMessage" name="message" rows="3" disabled></textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Update Contact Request</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+        <%- contentFor('FooterJs') %>
+
+            <!-- list.js min js -->
+            <script src="/assets/libs/list.js/list.min.js"></script>
+            <script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+            <!--ecommerce-customer init js -->
+            <script src="/assets/js/pages/ecommerce-customer-list.init.js"></script>
+            <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <!-- App js -->
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('.remove-item-btn').forEach(btn => {
+                        btn.addEventListener('click', function () {
+                            const idToDelete = this.dataset.id;
+                            document.getElementById("deleteForm").action = "/products/booking-request/delete/" + idToDelete;
+                        });
+                    });
+
+                    function updateContactRequestModal(contactRequestData) {
+                        document.getElementById('updateContactRequestId').value = contactRequestData.id;
+                        document.getElementById('updateName').value = contactRequestData.name;
+                        document.getElementById('updateEmail').value = contactRequestData.email;
+                        document.getElementById('updatePhone').value = contactRequestData.phone;
+                        document.getElementById('updateMessage').value = contactRequestData.message;
+                        document.getElementById('updateIsResolved').value = contactRequestData.isResolved;
+                    }
+
+                    // Add click handlers to edit buttons
+                    document.querySelectorAll('.edit-item-btn').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const contactRequestData = {
+                                id: this.dataset.id,
+                                name: this.dataset.name,
+                                email: this.dataset.email,
+                                phone: this.dataset.phone,
+                                message: this.dataset.message,
+                                isResolved: this.dataset.isResolved
+                            };
+                            updateContactRequestModal(contactRequestData);
+                        });
+                    });
+                    document.getElementById("updateContactRequestForm").action = "/products/booking-request/delete/" + idToDelete;
+
+                });
+            </script>

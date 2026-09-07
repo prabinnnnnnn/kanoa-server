@@ -1,0 +1,277 @@
+<%- contentFor('HeaderCss') %>
+    <!-- quill css -->
+    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+    <%- contentFor('body') %>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#content" role="tab">
+                                        <i class="ri-pages-line align-middle me-1"></i> Content
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#faq" role="tab">
+                                        <i class="ri-question-line align-middle me-1"></i> FAQ
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#seo" role="tab">
+                                        <i class="ri-file-search-line align-middle me-1"></i> SEO
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="content" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="mb-3">
+                                                <div class="card-body">
+                                                    <form action="/blogs/update/<%= blog.id %>" id="serviceForm"
+                                                        method="post" onsubmit="updateContent(event);"
+                                                        enctype="multipart/form-data">
+                                                        <div class="row gy-4">
+                                                            <div class="col-12">
+                                                                <label for="serviceId" class="form-label">Blog
+                                                                    Category</label>
+                                                                <select class="form-select" id="serviceId"
+                                                                    name="serviceId" required>
+                                                                    <% blog_categories.forEach(function(category) { %>
+                                                                        <option value="<%= category.id %>"
+                                                                            <%=blog.serviceId===category.id ? 'selected'
+                                                                            : '' %>><%= category.title %>
+                                                                        </option>
+                                                                        <% }); %>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="title" class="form-label">Blog Title</label>
+                                                                <input type="text" class="form-control" id="title"
+                                                                    name="title" value="<%= blog.title %>" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="slug" class="form-label">Slug</label>
+                                                                <input type="text" class="form-control" id="slug"
+                                                                    name="slug" value="<%= blog.slug %>" required>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="coverImage" class="form-label">Current
+                                                                    Image</label><br>
+                                                                <img src="/<%= blog.coverImagePath %>" alt="Cover Image"
+                                                                    class="img-fluid mt-2"
+                                                                    style="width: 100px; height: 100px;">
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="coverImage" class="form-label">Cover
+                                                                    Image</label>
+                                                                <input type="file" class="form-control" id="coverImage"
+                                                                    name="coverImage" accept="image/*"
+                                                                    onchange="previewImage(event)">
+                                                                <img id="imagePreview" src="#" alt="Image Preview"
+                                                                    class="d-none mt-2 w-25 img-fluid" />
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="description"
+                                                                    class="form-label">Description</label>
+                                                                <textarea name="description" id="description"
+                                                                    class="form-control"
+                                                                    rows="5"><%= blog.description %></textarea>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="isPublished" class="form-label">Is
+                                                                    Published?</label>
+                                                                <div class="form-check form-switch">
+                                                                    <input type="checkbox" class="form-check-input"
+                                                                        id="isPublished" name="isPublished"
+                                                                        <%=blog.isPublished ? 'checked' : '' %>>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="content" class="form-label">Content</label>
+                                                                <textarea name="content" id="content"
+                                                                    class="form-control"
+                                                                    rows="5"><%=blog.content%></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <button type="submit"
+                                                                class="btn btn-secondary waves-effect col-md-3">Update
+                                                                Content</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="faq" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="mb-4">
+                                                <form id="faqForm" action="/blogs/update-faqs/<%= blog.id %>"
+                                                    method="post">
+                                                    <div class="accordion" id="faqAccordion">
+                                                        <% if(faqs && faqs.length> 0) { %>
+                                                            <% faqs.forEach((faq, index)=> { %>
+                                                                <div class="accordion-item faq-item mb-2"
+                                                                    id="faq-item-<%= index %>">
+                                                                    <h2 class="accordion-header"
+                                                                        id="heading<%= index %>">
+                                                                        <button class="accordion-button collapsed"
+                                                                            type="button" data-bs-toggle="collapse"
+                                                                            data-bs-target="#collapse<%= index %>"
+                                                                            aria-expanded="false"
+                                                                            aria-controls="collapse<%= index %>">
+                                                                            <%= faq.question %>
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="collapse<%= index %>"
+                                                                        class="accordion-collapse collapse"
+                                                                        aria-labelledby="heading<%= index %>"
+                                                                        data-bs-parent="#faqAccordion">
+                                                                        <div class="accordion-body">
+                                                                            <div class="mb-3">
+                                                                                <label
+                                                                                    class="form-label">Question</label>
+                                                                                <input type="text"
+                                                                                    class="form-control faq-question"
+                                                                                    name="faqs[<%= index %>][question]"
+                                                                                    value="<%= faq.question %>"
+                                                                                    required>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Answer</label>
+                                                                                <textarea
+                                                                                    class="form-control faq-answer"
+                                                                                    name="faqs[<%= index %>][answer]"
+                                                                                    rows="3"
+                                                                                    required><%= faq.answer %></textarea>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Sort
+                                                                                    Order</label>
+                                                                                <input type="number"
+                                                                                    class="form-control faq-sort"
+                                                                                    name="faqs[<%= index %>][sortOrder]"
+                                                                                    value="<%= faq.sortOrder %>"
+                                                                                    required>
+                                                                            </div>
+                                                                            <input type="hidden"
+                                                                                name="faqs[<%= index %>][id]"
+                                                                                value="<%= faq.id %>">
+                                                                            <div class="text-end">
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger btn-sm"
+                                                                                    onclick="removeFaqItem('faq-item-<%= index %>')">Remove
+                                                                                    FAQ</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <% }) %>
+                                                                    <% } %>
+                                                    </div>
+
+                                                    <div id="newFaqContainer"></div>
+
+                                                    <div class="text-center mt-3 mb-3">
+                                                        <button type="button" class="btn btn-soft-primary waves-effect"
+                                                            onclick="addNewFaqItem()">
+                                                            <i class="ri-add-line align-middle me-1"></i> Add New FAQ
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="text-end">
+                                                        <button type="submit" class="btn btn-secondary">Update All
+                                                            FAQs</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="seo" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="card-body">
+                                                <form action="/blogs/update-seo/<%= blog.id %>" method="POST">
+                                                    <div class="row gy-4">
+                                                        <div class="col-md-6">
+                                                            <label for="seoTitle" class="form-label">SEO Title</label>
+                                                            <input type="text" class="form-control" id="seoTitle"
+                                                                name="seoTitle" value="<%= seo?.seoTitle %>">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="canonicalUrl" class="form-label">Canonical
+                                                                URL</label>
+                                                            <input type="url" class="form-control" id="canonicalUrl"
+                                                                name="canonicalUrl" value="<%= seo?.canonicalUrl %>">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="robots" class="form-label">Robots</label>
+                                                            <textarea class="form-control" id="robots" name="robots"
+                                                                rows="2"><%= seo?.robots %></textarea>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="keywords" class="form-label">Keywords</label>
+                                                            <textarea class="form-control" id="keywords" name="keywords"
+                                                                rows="2"><%= seo?.keywords %></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="seoDescription" class="form-label">SEO
+                                                                Description</label>
+                                                            <textarea class="form-control" id="seoDescription"
+                                                                name="seoDescription"
+                                                                rows="3"><%= seo?.seoDescription %></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="schema" class="form-label">Schema</label>
+                                                            <textarea class="form-control" id="schema" name="schema"
+                                                                rows="10"
+                                                                placeholder="Enter your JSON-LD or other schema markup here"><%
+                                                        try {
+                                                            if (seo?.schema) {
+                                                                const parsed = JSON.parse(seo.schema);
+                                                                %><%= JSON.stringify(parsed, null, 2) %><%
+                                                            } else {
+                                                                %><%
+                                                            }
+                                                        } catch (e) {
+                                                            %><%= seo?.schema || '' %><%
+                                                        }
+                                                    %></textarea>
+                                                        </div>
+                                                        <div class="col-12 text-end">
+                                                            <button type="submit" class="btn btn-secondary">Update
+                                                                SEO</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!-- end card-body -->
+            </div><!-- end card -->
+
+        </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>
+            <script src="/assets/js/main/tinymce.js"></script>
+            <script src="/assets/js/main/editCommon.js"></script>

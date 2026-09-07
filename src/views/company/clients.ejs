@@ -1,0 +1,298 @@
+<%- contentFor('HeaderCss') %>
+  <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+  <%- contentFor('body') %>
+    <div class="row">
+      <div class="col-lg-12">
+        <%- include ('../partials/messages') %>
+          <div class="card" id="customerList">
+            <div class="card-header border-bottom-dashed">
+
+              <div class="row g-4 align-items-center">
+                <div class="col-sm">
+                  <div>
+                    <h5 class="card-title mb-0">Clients</h5>
+                  </div>
+                </div>
+                <div class="col-sm-auto">
+                  <div class="d-flex flex-wrap align-items-start gap-2">
+                    <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
+                        class="ri-delete-bin-2-line"></i></button>
+                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
+                      data-bs-target="#createClientModal"><i class="ri-add-line align-bottom me-1"></i> New
+                      Client</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body border-bottom-dashed border-bottom">
+              <form>
+                <div class="row g-3">
+                  <div class="col-xl-6">
+                    <div class="search-box">
+                      <input type="text" class="form-control search" placeholder="Search here...">
+                      <i class="ri-search-line search-icon"></i>
+                    </div>
+                  </div>
+                  <!--end col-->
+                  <div class="col-xl-6">
+                    <div class="row g-3">
+                      <div class="col-sm-4">
+                      </div>
+                      <!--end col-->
+                      <div class="col-sm-4">
+                        <div>
+                        </div>
+                      </div>
+                      <!--end col-->
+
+                      <div class="col-sm-4">
+                        <div>
+                        </div>
+                      </div>
+                      <!--end col-->
+                    </div>
+                  </div>
+                </div>
+                <!--end row-->
+              </form>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="table-responsive table-card mb-1">
+                  <table class="table align-middle" id="customerTable">
+                    <thead class="table-light text-muted">
+                      <tr>
+                        <th scope="col" style="width: 50px;">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                          </div>
+                        </th>
+
+                        <th class="sort" data-sort="imagePath">Image</th>
+                        <th class="sort" data-sort="title">Title</th>
+                        <th>URL</th>
+                        <th class="sort" data-sort="action">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody class="list form-check-all">
+                      <% if (clients && clients.length> 0) { %>
+                        <% clients.forEach(client=> { %>
+                          <tr>
+                            <th scope="row">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="chk_child"
+                                  value="<%= client.id %>">
+                              </div>
+                            </th>
+                            <td class="imagePath"><img src="<%= client.imagePath %>" alt="<%= client.name %>"
+                                style="width: 50px;"></td>
+                            <td class="title">
+                              <%= client.name %>
+                            </td>
+                            <td>
+                              <a href="<%= client.link %>" target="_blank"><%= client.link %></a>
+                            </td>
+                            <td>
+                              <ul class="list-inline hstack gap-2 mb-0">
+                                <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                  data-bs-placement="top" title="Edit">
+                                  <a class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal"
+                                    href="#updateClientModal" data-id="<%= client.id %>" data-title="<%= client.name %>"
+                                    data-image-path="<%= client.imagePath %>" data-link="<%= client.link %>">
+                                    <i class="ri-pencil-fill fs-16"></i>
+                                  </a>
+                                </li>
+                                <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                  data-bs-placement="top" title="Remove">
+                                  <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal"
+                                    href="#deleteRecordModal" data-id="<%= client.id %>">
+                                    <i class="ri-delete-bin-5-fill fs-16"></i>
+                                  </a>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          <% }); %>
+                            <% } else { %>
+                              <tr>
+                                <td colspan="8" class="text-center">No clients found</td>
+                              </tr>
+                              <% } %>
+                    </tbody>
+                  </table>
+                  <div class="noresult" style="display: none">
+                    <div class="text-center">
+                      <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                        colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <div class="pagination-wrap hstack gap-2">
+                    <a class="page-item pagination-prev disabled" href="#">
+                      Previous
+                    </a>
+                    <ul class="pagination listjs-pagination mb-0"></ul>
+                    <a class="page-item pagination-next" href="#">
+                      Next
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal -->
+              <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="btn-close" id="deleteRecord-close" data-bs-dismiss="modal"
+                        aria-label="Close" id="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mt-2 text-center">
+                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                          colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                          <h4>Are you sure ?</h4>
+                          <p class="text-muted mx-4 mb-0">Are you sure you want to remove this record ?</p>
+                        </div>
+                      </div>
+                      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                        <form action="" method="POST" id="deleteForm">
+                          <button type="submit" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--end modal -->
+
+
+              <div class="modal fade" id="updateClientModal" tabindex="-1" aria-labelledby="updateClientModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="updateClientModalLabel">Update Client</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/clients/update" method="POST" enctype="multipart/form-data" id="updateClientForm">
+                        <input type="hidden" id="updateClientId" name="id">
+                        <div class="mb-3">
+                          <label for="updateTitle" class="form-label">Name</label>
+                          <input type="text" class="form-control" id="updateTitle" name="name">
+                        </div>
+                        <div class="mb-3">
+                          <label for="updateLink" class="form-label">URL</label>
+                          <input type="text" class="form-control" id="updateLink" name="link">
+                        </div>
+                        <div class="mb-3">
+                          <label for="updateImage" class="form-label">Image</label>
+                          <input type="file" class="form-control" id="updateImage" name="image">
+                          <div class="mt-2" id="currentImagePreview">
+                            <img src="" alt="Current Review Image" class="img-thumbnail"
+                              style="max-width: 200px; display: none;">
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Update Client</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="createClientModal" tabindex="-1" aria-labelledby="createClientModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="createClientModalLabel">Add New Client</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/clients/create" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                          <label for="name" class="form-label">Name</label>
+                          <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="link" class="form-label">URL</label>
+                          <input type="text" class="form-control" id="link" name="link">
+                        </div>
+                        <div class="mb-3">
+                          <label for="image" class="form-label">Image</label>
+                          <input type="file" class="form-control" id="image" name="image" required>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Create Client</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      </div>
+      <!--end col-->
+    </div>
+    <!--end row-->
+
+    <%- contentFor('FooterJs') %>
+
+      <!-- list.js min js -->
+      <script src="/assets/libs/list.js/list.min.js"></script>
+      <script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+      <!--ecommerce-customer init js -->
+      <script src="/assets/js/pages/ecommerce-customer-list.init.js"></script>
+      <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+      <!-- App js -->
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          document.querySelectorAll('.remove-item-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+              const idToDelete = this.dataset.id;
+              document.getElementById("deleteForm").action = "/clients/delete/" + idToDelete;
+            });
+          });
+
+          function updateClientModal(clientData) {
+            document.getElementById('updateClientId').value = clientData.id;
+            document.getElementById('updateTitle').value = clientData.title;
+            document.getElementById('updateLink').value = clientData.link;
+
+            // Handle image preview
+            const imagePreview = document.querySelector('#currentImagePreview img');
+            if (clientData.imagePath) {
+              imagePreview.src = '/' + clientData.imagePath;
+              imagePreview.style.display = 'block';
+            } else {
+              imagePreview.style.display = 'none';
+            }
+          }
+
+          // Add click handlers to edit buttons
+          document.querySelectorAll('.edit-item-btn').forEach(button => {
+            button.addEventListener('click', function () {
+              const clientData = {
+                id: this.dataset.id,
+                title: this.dataset.title,
+                imagePath: this.dataset.imagePath,
+                link: this.dataset.link
+              };
+              updateClientModal(clientData);
+            });
+          });
+        });
+      </script>

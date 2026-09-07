@@ -1,0 +1,349 @@
+<%- contentFor('HeaderCss') %>
+    <%- contentFor('body') %>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0">
+                                    Quotation #<span class="text-primary">
+                                        <%= quotation.quotationNumber %>
+                                    </span>
+                                </h4>
+
+                                <% const statusColors={ 'new' : 'bg-primary' , 'client-notified'
+                                    : 'bg-warning text-dark' , 'proposal-sent' : 'bg-info' , 'completed' : 'bg-success'
+                                    , 'rejected' : 'bg-danger' }; const badgeClass=statusColors[quotation.status]
+                                    || 'bg-secondary' ; %>
+
+                                    <span class="badge <%= badgeClass %> fs-6 px-3 py-2">
+                                        <%= quotation.status.toUpperCase().replace('-', ' ' ) %>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#quotation-detail" role="tab">
+                                        <i class="ri-pages-line align-middle me-1"></i> Quotation Details
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#office-update" role="tab">
+                                        <i class="ri-question-line align-middle me-1"></i> Office Update
+                                    </a>
+                                </li>
+                            </ul>
+                            <% function safeParse(json) { try { return JSON.parse(json); } catch (e) { return []; } }
+                                const servicesArray=safeParse(quotation.services); const
+                                featuresArray=safeParse(quotation.mustHaveFeatures); %>
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="quotation-detail" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="mb-3">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title mb-4 text-primary">Quotation Information
+                                                        </h4>
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th scope="row">Quotation Number</th>
+                                                                    <td>#<%= quotation.quotationNumber %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Client Name</th>
+                                                                    <td>
+                                                                        <%= quotation.name %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Email</th>
+                                                                    <td>
+                                                                        <%= quotation.email %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Date</th>
+                                                                    <td>
+                                                                        <%= new
+                                                                            Date(quotation.createdAt).toLocaleString('en-GB',
+                                                                            { day: '2-digit' , month: 'short' ,
+                                                                            year: 'numeric' , hour: '2-digit' ,
+                                                                            minute: '2-digit' , hour12: true }) %>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                        <h4 class="card-title mb-4 text-primary">Contact Information
+                                                        </h4>
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th scope="row">Phone Number</th>
+                                                                    <td>
+                                                                        <%= quotation.phoneNumber || 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Preferred Contact Method</th>
+                                                                    <td>
+                                                                        <%= quotation.preferredContactMethod || 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Timezone</th>
+                                                                    <td>
+                                                                        <%= quotation.timezone || 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Best Time to Contact</th>
+                                                                    <td>
+                                                                        <%= quotation.bestTimeToContact || 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                        <h4 class="card-title mb-4 text-primary">Business Information
+                                                        </h4>
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th scope="row">Business Type</th>
+                                                                    <td>
+                                                                        <%= quotation.businessType %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Industry</th>
+                                                                    <td>
+                                                                        <%= quotation.industry %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Company Size</th>
+                                                                    <td>
+                                                                        <%= quotation.companySize || 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Primary Goal</th>
+                                                                    <td>
+                                                                        <%= quotation.primaryGoal %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Existing Assets</th>
+                                                                    <td>
+                                                                        <%= quotation.existingAssets || 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                        <h4 class="card-title mb-4 text-primary">Project Details</h4>
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                                <!-- Services -->
+                                                                <tr>
+                                                                    <th scope="row">Services</th>
+                                                                    <td>
+                                                                        <% if (servicesArray.length) { %>
+                                                                            <ul class="mb-0">
+                                                                                <% servicesArray.forEach(service=> { %>
+                                                                                    <li>
+                                                                                        <%= service %>
+                                                                                    </li>
+                                                                                    <% }); %>
+                                                                            </ul>
+                                                                            <% } else { %>
+                                                                                Not specified
+                                                                                <% } %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Detailed Services</th>
+                                                                    <td>
+                                                                        <%= quotation.detailedServices %>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- Reference Links -->
+                                                                <tr>
+                                                                    <th scope="row">Reference Links</th>
+                                                                    <td>
+                                                                        <% if (quotation.referenceLinks.length) { %>
+                                                                            <ul class="mb-0">
+                                                                                <%
+                                                                                    quotation.referenceLinks.forEach(link=>
+                                                                                    { %>
+                                                                                    <li><a href="<%= link %>"
+                                                                                            target="_blank"
+                                                                                            rel="noopener noreferrer">
+                                                                                            <%= link %>
+                                                                                        </a></li>
+                                                                                    <% }); %>
+                                                                            </ul>
+                                                                            <% } else { %>
+                                                                                None
+                                                                                <% } %>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <!-- Must-have Features -->
+                                                                <tr>
+                                                                    <th scope="row">Must-have Features</th>
+                                                                    <td>
+                                                                        <% if ( quotation.mustHaveFeatures.length) { %>
+                                                                            <ul class="mb-0">
+                                                                                <%
+                                                                                    quotation.mustHaveFeatures.forEach(feature=>
+                                                                                    { %>
+                                                                                    <li>
+                                                                                        <%= feature %>
+                                                                                    </li>
+                                                                                    <% }); %>
+                                                                            </ul>
+                                                                            <% } else { %>
+                                                                                Not specified
+                                                                                <% } %>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th scope="row">Timeline</th>
+                                                                    <td>
+                                                                        <%= quotation.timeline %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Target Launch Date</th>
+                                                                    <td>
+                                                                        <%= quotation.targetLaunchDate ? new
+                                                                            Date(quotation.targetLaunchDate).toLocaleDateString('en-GB',
+                                                                            { day: '2-digit' , month: 'short' ,
+                                                                            year: 'numeric' }) : 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Budget Range</th>
+                                                                    <td>
+                                                                        <%= quotation.budgetRange %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Pricing Model</th>
+                                                                    <td>
+                                                                        <%= quotation.pricingModel || 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Additional Notes</th>
+                                                                    <td>
+                                                                        <%= quotation.additionalNotes || 'N/A' %>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="office-update" role="tabpanel">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title mb-4 text-primary">Update Quotation Details</h5>
+                                                <form method="POST" action="/quotations/update/<%= quotation.id %>">
+                                                    <div class="row gy-4">
+
+                                                        <!-- Status -->
+                                                        <div class="col-md-12">
+                                                            <label for="status-name"
+                                                                class="form-label fw-bold">Status</label>
+                                                            <select class="form-select" id="status-name" name="status"
+                                                                required>
+                                                                <option value="new" <%=quotation.status==='new'
+                                                                    ? 'selected' : '' %>>New</option>
+                                                                <option value="client-notified"
+                                                                    <%=quotation.status==='client-notified' ? 'selected'
+                                                                    : '' %>>Client Notified</option>
+                                                                <option value="proposal-sent"
+                                                                    <%=quotation.status==='proposal-sent' ? 'selected'
+                                                                    : '' %>>Proposal Sent</option>
+                                                                <option value="completed"
+                                                                    <%=quotation.status==='completed' ? 'selected' : ''
+                                                                    %>>Completed</option>
+                                                                <option value="rejected"
+                                                                    <%=quotation.status==='rejected' ? 'selected' : ''
+                                                                    %>>Rejected</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Proposal URL -->
+                                                        <div class="col-md-12">
+                                                            <label for="proposalUrl" class="form-label fw-bold">Proposal
+                                                                URL</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text"><i
+                                                                        class="bi bi-link-45deg"></i></span>
+                                                                <input type="url" class="form-control" id="proposalUrl"
+                                                                    name="proposalUrl" placeholder="https://…"
+                                                                    value="<%= quotation.proposalUrl || '' %>">
+                                                            </div>
+                                                            <div class="form-text">Paste the full URL including https://
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Internal Notes -->
+                                                        <div class="col-md-12">
+                                                            <label for="internalNotes"
+                                                                class="form-label fw-bold">Internal Notes</label>
+                                                            <textarea class="form-control" id="internalNotes"
+                                                                name="internalNotes" rows="4"
+                                                                placeholder="…"><%= quotation.internalNotes || '' %></textarea>
+                                                        </div>
+
+                                                        <!-- Assigned To -->
+                                                        <div class="col-md-12">
+                                                            <label for="assignedTo" class="form-label fw-bold">Assigned
+                                                                To</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text"><i
+                                                                        class="bi bi-person"></i></span>
+                                                                <input type="text" class="form-control" id="assignedTo"
+                                                                    name="assignedTo" placeholder="Team member name"
+                                                                    value="<%= quotation.assignedTo || '' %>">
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Submit -->
+                                                        <div class="col-12 text-end">
+                                                            <button type="submit" class="btn btn-primary px-4">
+                                                                <i class="bi bi-check-circle me-2"></i> Update Quotation
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        </div>
+                    </div><!-- end card-body -->
+            </div><!-- end card -->
+
+        </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>

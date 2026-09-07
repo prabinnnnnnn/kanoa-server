@@ -1,0 +1,149 @@
+<%- contentFor('HeaderCss') %>
+    <!-- quill css -->
+    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+    <%- contentFor('body') %>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+                    <form action="/portfolio-development/new" id="serviceForm" method="post" onsubmit="updateContent(event);" enctype="multipart/form-data">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#blogContent" role="tab">
+                                            <i class="ri-pages-line align-middle me-1"></i> Details
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#seo" role="tab">
+                                            <i class="ri-file-search-line align-middle me-1"></i> About Client
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#faq" role="tab">
+                                            <i class="ri-question-line align-middle me-1"></i> Content
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="blogContent" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="mb-3">
+                                                    <div class="card-body">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="serviceId" class="form-label">Service</label>
+                                                            <select class="form-select" id="serviceId" name="serviceId" required>
+                                                                <% service.forEach(function(category) { %>
+                                                                    <option value="<%= category.id %>">
+                                                                        <%= category.title %>
+                                                                    </option>
+                                                                    <% }); %>
+                                                            </select>
+                                                        </div>
+                                                        <div class="row gy-4">
+                                                            <div class="col-md-6">
+                                                                <label for="title" class="form-label">Title</label>
+                                                                <input type="text" class="form-control" id="title" name="title" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="slug" class="form-label">Slug</label>
+                                                                <input type="text" class="form-control" id="slug" name="slug" required>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="imagePath" class="form-label">Cover Image</label>
+                                                                <input type="file" class="form-control" id="imagePath" name="imagePath" accept="image/*" onchange="previewImage(event)" required>
+                                                                <img id="imagePreview" src="#" alt="Image Preview" class="d-none mt-2 w-25 img-fluid" />
+                                                            </div>
+                                                            <div class="mb-3 col-6">
+                                                                <label for="tags" class="form-label">Tags</label>
+                                                                <input type="text" class="form-control" id="tags" name="tags" required>
+                                                            </div>
+                                                            <div class="mb-3 col-6">
+                                                                <label for="link" class="form-label">Link</label>
+                                                                <input type="text" class="form-control" id="link" name="url">
+                                                            </div>
+                                                            <div class="mb-3 col-6">
+                                                                <label for="altText" class="form-label">Alt Text</label>
+                                                                <input type="text" class="form-control" id="altText" name="altText" required>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="description" class="form-label">Description</label>
+                                                                <textarea name="description" id="description" class="form-control" rows="5"></textarea>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="faq" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <fieldset>
+                                                    <legend>Development Portfolio Contents</legend>
+                                                    <div id="contentFields">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="button"
+                                                            class="btn btn-soft-primary waves-effect col-md-12"
+                                                            onclick="addDevelopmentPortfolioContent()">Add New
+                                                            Content</button>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="seo" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="card-body">
+                                                    <div class="row gy-4">
+                                                        <div class="col-6">
+                                                            <label for="coverImage" class="form-label">Website Demo
+                                                                Image</label>
+                                                            <input type="file" class="form-control" id="coverImage"
+                                                                name="coverImage" accept="image/*">
+
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="clientImage" class="form-label">client
+                                                                Image</label>
+                                                            <input type="file" class="form-control" id="clientImage"
+                                                                name="clientImage" accept="image/*">
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="seoDescription"
+                                                                class="form-label">Description</label>
+                                                            <textarea class="form-control" id="seoDescription"
+                                                                name="client[description]" rows="8"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-body -->
+                        </div><!-- end card -->
+
+                        <div class="card card-body">
+                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+                        </div>
+                    </form>
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>
+            <script src="/assets/js/main/tinymce.js"></script>
+            <script src="/assets/js/main/addCommon.js"></script>

@@ -1,0 +1,192 @@
+<!-- ========== App Menu ========== -->
+<div class="app-menu navbar-menu">
+  <!-- LOGO -->
+  <div class="navbar-brand-box">
+    <!-- Dark Logo-->
+    <a href="/" class="logo logo-dark">
+      <span class="logo-sm">
+        <img src="/assets/images/logo-sm.png" alt="Admin" height="35" />
+      </span>
+      <span class="logo-lg">
+        <img src="/assets/images/logo-dark.png" alt="Admin Panel" height="35" />
+      </span>
+    </a>
+    <!-- Light Logo-->
+    <a href="/" class="logo logo-light">
+      <span class="logo-sm">
+        <img src="/assets/images/logo-sm.png" alt="Admin" height="35" />
+      </span>
+      <span class="logo-lg">
+        <img src="/assets/images/logo-light.png" alt="Admin Panel" height="35" />
+      </span>
+    </a>
+    <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+      <i class="ri-record-circle-line"></i>
+    </button>
+  </div>
+
+  <div id="scrollbar">
+    <div class="container-fluid">
+      <div id="two-column-menu"></div>
+      <ul class="navbar-nav" id="navbar-nav">
+        <li class="menu-title"><span data-key="t-services">Menu</span></li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/quotations" data-key="">
+            <i class="ri-chat-quote-line"></i> <span data-key="">Quotations</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/blogs" data-key="">
+            <i class="lab la-blogger"></i> <span data-key="">Blogs</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="#product" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="product">
+            <i class="bi bi-cart"></i><span data-key="">Product</span>
+          </a>
+          <div class="collapse menu-dropdown" id="product">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="/products" class="nav-link" data-key="">Products</a>
+              </li>
+              <li class="nav-item">
+                <a href="/products/reviews" class="nav-link" data-key="">Product Reviews</a>
+              </li>
+              <li class="nav-item">
+                <a href="/products/booking-requests" class="nav-link" data-key="">Product Booking Lists</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="#sidebarService" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarService">
+            <i class="ri-settings-4-line"></i> <span data-key="">Service</span>
+          </a>
+          <div class="collapse menu-dropdown" id="sidebarService">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="/services" class="nav-link" data-key="">Services </a>
+              </li>
+              <li class="nav-item">
+                <a href="/services/categories" class="nav-link" data-key=""> Service Category </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="#sidebarPortfolio" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarPortfolio">
+            <i class="ri-folder-user-fill"></i> <span data-key="">Artist</span>
+          </a>
+          <div class="collapse menu-dropdown" id="sidebarPortfolio">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="/artists" class="nav-link" data-key="portfolio-design">Artists</a>
+              </li>
+              <li class="nav-item">
+                <a href="/songs" class="nav-link" data-key="portfolio-development">Songs</a>
+              </li>
+              <li class="nav-item">
+                <a href="/albums" class="nav-link" data-key="portfolio-marketing">Albums</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="#sidebarCompany" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarCompany">
+            <i class="ri-building-line"></i> <span data-key="">Company</span>
+          </a>
+          <div class="collapse menu-dropdown" id="sidebarCompany">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="/clients" class="nav-link" data-key="">Clients </a>
+              </li>
+              <li class="nav-item">
+                <a href="/contact-information" class="nav-link" data-key="">Contact Information </a>
+              </li>
+              <li class="nav-item">
+                <a href="/teams" class="nav-link" data-key="">Teams</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="#sidebarMisc" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarMisc">
+            <i class="ri-global-line"></i> <span data-key="">Misc</span>
+          </a>
+          <div class="collapse menu-dropdown" id="sidebarMisc">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="/sliders" class="nav-link" data-key="">Sliders </a>
+              </li>
+              <li class="nav-item">
+                <a href="/testimonials" class="nav-link" data-key="">Testimonials </a>
+              </li>
+              <li class="nav-item">
+                <a href="/site-icons" class="nav-link" data-key="">Site Icons </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/contact-requests" data-key="">
+            <i class="ri-message-line"></i> <span data-key="">Contact Requests</span>
+          </a>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button"
+            aria-expanded="false" aria-controls="sidebarAuth">
+            <i class="ri-user-line"></i> <span data-key="">Auth</span>
+          </a>
+          <div class="collapse menu-dropdown" id="sidebarAuth">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="/auth/users" class="nav-link" data-key="">Users </a>
+              </li>
+              <!-- <li class="nav-item">
+                <a href="/auth/login" class="nav-link" data-key="">Login </a>
+              </li> -->
+              <li class="nav-item">
+                <a href="/auth/register" class="nav-link" data-key=""> Register </a>
+              </li>
+              <li class="nav-item">
+                <a href="/auth/mfa/setup" class="nav-link" data-key=""> Enable 2FA </a>
+              </li>
+              <li class="nav-item">
+                <form method="POST" action="/auth/logout" style="display: inline;">
+                  <button type="submit" class="nav-link btn btn-link p-0 m-0 align-baseline"
+                    style="text-decoration: none;">
+                    Logout
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="sidebar-background"></div>
+
+<!-- Left Sidebar End -->
+<!-- Vertical Overlay-->
+<div class="vertical-overlay"></div>

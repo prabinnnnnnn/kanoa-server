@@ -1,0 +1,432 @@
+<%- contentFor('HeaderCss') %>
+    <!-- quill css -->
+    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+<%- contentFor('body') %>
+
+<div class="row">
+    <div class="col-xl-12">
+        <%- include ('../partials/messages') %>
+
+            <div class="card">
+                <div class="card-body">
+                    
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#contactInformation" role="tab">
+                                <i class="ri-pages-line align-middle me-1"></i> Contact Information
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#socialMedia" role="tab">
+                                <i class="ri-file-search-line align-middle me-1"></i> Social Media
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="contactInformation" role="tabpanel">
+                            <div class="card-header border-bottom-dashed">
+
+                                <div class="row g-4 align-items-center">
+                                  <div class="col-sm">
+                                    <div>
+                                      <h5 class="card-title mb-0">Contact Information</h5>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-auto">
+                                    <div class="d-flex flex-wrap align-items-start gap-2">
+                                      <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#createContactModal"><i class="ri-add-line align-bottom me-1"></i> New Contact Information</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="d-flex">
+                                <div class="flex-grow-1 ms-2">
+                                    <div class="mb-3">
+                                        <div class="card-body">
+                                            <div class="row gy-4">
+                                                <div>
+                                                    <div class="table-responsive table-card mb-1">
+                                                      <table class="table align-middle" id="customerTable">
+                                                        <thead class="table-light text-muted">
+                                                          <tr>
+                                                            <th scope="col" style="width: 50px;">
+                                                              <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                                              </div>
+                                                            </th>
+                                    
+                                                            <th class="sort" data-sort="branch">Branch</th>
+                                                            <th class="sort" data-sort="phoneNumber">Phone Number</th>
+                                                            <th class="sort" data-sort="primaryMail">Primary Mail</th>
+                                                            <th class="sort" data-sort="officeHour">Office Hour</th>
+                                                            <th class="sort" data-sort="address">Address</th>
+                                                            <th class="sort" data-sort="action">Action</th>
+                                                          </tr>
+                                                        </thead>
+                                                        <tbody class="list form-check-all">
+                                                          <% if (contactInfoList && contactInfoList.length > 0) { %>
+                                                              <% contactInfoList.forEach(contact => { %>
+                                                                  <tr>
+                                                                      <th scope="row">
+                                                                          <div class="form-check">
+                                                                              <input class="form-check-input" type="checkbox" name="chk_child" value="<%= contact.id %>">
+                                                                          </div>
+                                                                      </th>
+                                                                      
+                                                                      <td class="phoneNumber"><%= contact.phoneNumber %></td>
+                                                                      <td class="primaryMail"><%= contact.primaryMail %></td>
+                                                                      <td class="officeHour"><%= contact.officeHour %></td>
+                                                                      <td class="address"><%= contact.address %></td>
+                                                                      <td>
+                                                                          <ul class="list-inline hstack gap-2 mb-0">
+                                                                              <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+                                                                                  <a class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" href="#updateContactModal" 
+                                                                                  data-id="<%= contact.id %>"
+                                                                                  data-phone-number="<%= contact.phoneNumber %>"
+                                                                                  data-whatsapp-number="<%= contact.whatsappNumber %>"
+                                                                                  data-primary-mail="<%= contact.primaryMail %>"
+                                                                                  data-secondary-mail="<%= contact.secondaryMail %>"
+                                                                                  data-office-hour="<%= contact.officeHour %>"
+                                                                                  data-address="<%= contact.address %>"
+                                                                                  data-google-map="<%= contact.googleMap %>"
+                                                                                  >
+                                                                                      <i class="ri-pencil-fill fs-16"></i>
+                                                                                  </a>
+                                                                              </li>
+                                                                              <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
+                                                                                  <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal" data-id="<%= contact.id %>">
+                                                                                      <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                                                  </a>
+                                                                              </li>
+                                                                          </ul>
+                                                                      </td>
+                                                                  </tr>
+                                                              <% }); %>
+                                                          <% } else { %>
+                                                              <tr>
+                                                                  <td colspan="8" class="text-center">No contact information found</td>
+                                                              </tr>
+                                                          <% } %>
+                                                        </tbody>
+                                                      </table>
+                                                      <div class="noresult" style="display: none">
+                                                        <div class="text-center">
+                                                          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                                                          <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end">
+                                                      <div class="pagination-wrap hstack gap-2">
+                                                        <a class="page-item pagination-prev disabled" href="#">
+                                                          Previous
+                                                        </a>
+                                                        <ul class="pagination listjs-pagination mb-0"></ul>
+                                                        <a class="page-item pagination-next" href="#">
+                                                          Next
+                                                        </a>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-pane" id="socialMedia" role="tabpanel">
+                            <div class="d-flex">
+                                <div class="flex-grow-1 ms-2">
+                                    <div class="card-body">
+                                            <div class="row gy-4">
+                                                <form id="socialMediaForm" action="/contact-information/update-social-media" method="post">
+                                                    <div class="accordion" id="socialMediaAccordion">
+                                                      <% if (socialMediaList && socialMediaList.length > 0) { %>
+                                                        <% socialMediaList.forEach((social, index) => { %>
+                                                          <div class="accordion-item mb-2" id="social-item-<%= index %>">
+                                                            <h2 class="accordion-header" id="socialHeading<%= index %>">
+                                                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#socialCollapse<%= index %>" aria-expanded="false" aria-controls="socialCollapse<%= index %>">
+                                                                <%= social.platform %>
+                                                              </button>
+                                                            </h2>
+                                                            <div id="socialCollapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="socialHeading<%= index %>" data-bs-parent="#socialMediaAccordion">
+                                                              <div class="accordion-body">
+                                                                <div class="mb-3">
+                                                                  <label class="form-label">Platform</label>
+                                                                  <input type="text" class="form-control" name="socials[<%= index %>][platform]" value="<%= social.platform %>" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                  <label class="form-label">Icon Class</label>
+                                                                  <input type="text" class="form-control" name="socials[<%= index %>][icon]" value="<%= social.icon %>" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                  <label class="form-label">URL</label>
+                                                                  <input type="url" class="form-control" name="socials[<%= index %>][url]" value="<%= social.url %>" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                  <label class="form-label">Sort Order</label>
+                                                                  <input type="number" class="form-control" name="socials[<%= index %>][sortOrder]" value="<%= social.sortOrder %>" required>
+                                                                </div>
+                                                                <input type="hidden" name="socials[<%= index %>][id]" value="<%= social.id %>">
+                                                                <div class="text-end">
+                                                                  <button type="button" class="btn btn-danger btn-sm" onclick="removeSocialItem('social-item-<%= index %>')">Remove</button>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        <% }) %>
+                                                      <% } %>
+                                                    </div>
+                                                  
+                                                    <div id="newSocialContainer"></div>
+                                                  
+                                                    <div class="text-center mt-3 mb-3">
+                                                      <button type="button" class="btn btn-soft-primary" onclick="addNewSocialItem()">
+                                                        <i class="ri-add-line me-1"></i> Add New Social Media
+                                                      </button>
+                                                    </div>
+                                                  
+                                                    <div class="text-end">
+                                                      <button type="submit" class="btn btn-secondary">Update All</button>
+                                                    </div>
+                                                  </form>
+                                                  
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div><!-- end card-body -->
+            </div><!-- end card -->
+
+            <!-- Modal -->
+        <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="btn-close" id="deleteRecord-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                      <h4>Are you sure ?</h4>
+                      <p class="text-muted mx-4 mb-0">Are you sure you want to remove this record ?</p>
+                    </div>
+                  </div>
+                  <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <form action="" method="POST" id="deleteForm">
+                      <button type="submit" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--end modal -->
+  
+  
+          <div class="modal fade" id="updateContactModal" tabindex="-1" aria-labelledby="updateContactModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="updateContactModalLabel">Update Contact Information</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="/contact-information/update" method="POST" id="updateContactForm">
+                  <input type="hidden" id="updateContactId" name="id">
+                  
+                  <div class="mb-3">
+                    <label for="updatePhoneNumber" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="updatePhoneNumber" name="phoneNumber" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="updateWhatsappNumber" class="form-label">Whatsapp Number</label>
+                    <input type="text" class="form-control" id="updateWhatsappNumber" name="whatsappNumber" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="updatePrimaryMail" class="form-label">Primary Mail</label>
+                    <input type="text" class="form-control" id="updatePrimaryMail" name="primaryMail" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="updateSecondaryMail" class="form-label">Secondary Mail</label>
+                    <input type="text" class="form-control" id="updateSecondaryMail" name="secondaryMail" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="updateOfficeHour" class="form-label">Office Hour</label>
+                    <input type="text" class="form-control" id="updateOfficeHour" name="officeHour" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="updateAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="updateAddress" name="address" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="updateGoogleMap" class="form-label">Google Map</label>
+                    <textarea type="text" class="form-control" id="updateGoogleMap" name="googleMap" rows="3" ></textarea>
+                  </div>
+                  
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update Contact Information</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="modal fade" id="createContactModal" tabindex="-1" aria-labelledby="createContactModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="createContactModalLabel">Add New Contact Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="/contact-information/create" method="POST">
+                  <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="whatsappNumber" class="form-label">Whatsapp Number</label>
+                    <input type="text" class="form-control" id="whatsappNumber" name="whatsappNumber" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="primaryMail" class="form-label">Primary Mail</label>
+                    <input type="text" class="form-control" id="primaryMail" name="primaryMail" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="secondaryMail" class="form-label">Secondary Mail</label>
+                    <input type="text" class="form-control" id="secondaryMail" name="secondaryMail" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="officeHour" class="form-label">Office Hour</label>
+                    <input type="text" class="form-control" id="officeHour" name="officeHour" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="googleMap" class="form-label">Google Map</label>
+                    <textarea type="text" class="form-control" id="googleMap" name="googleMap" rows="3" required></textarea>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create Contact Information</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div><!-- end col -->
+</div><!-- end row -->
+
+<%- contentFor('FooterJs') %>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-uploader@1.2.2/dist/quill.imageUploader.min.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.remove-item-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idToDelete = this.dataset.id;
+                    document.getElementById("deleteForm").action = "/contact-information/delete/" + idToDelete;
+                });
+            });
+      
+          function updateContactModal(contactData) {
+            document.getElementById('updateContactId').value = contactData.id;
+            document.getElementById('updatePhoneNumber').value = contactData.phoneNumber;
+            document.getElementById('updateWhatsappNumber').value = contactData.whatsappNumber;
+            document.getElementById('updatePrimaryMail').value = contactData.primaryMail;
+            document.getElementById('updateSecondaryMail').value = contactData.secondaryMail;
+            document.getElementById('updateOfficeHour').value = contactData.officeHour;
+            document.getElementById('updateAddress').value = contactData.address;
+            document.getElementById('updateGoogleMap').value = contactData.googleMap;
+          }
+      
+          // Add click handlers to edit buttons
+          document.querySelectorAll('.edit-item-btn').forEach(button => {
+            button.addEventListener('click', function() {
+              const contactData = {
+                id: this.dataset.id,
+                phoneNumber: this.dataset.phoneNumber,
+                whatsappNumber: this.dataset.whatsappNumber,
+                primaryMail: this.dataset.primaryMail,
+                secondaryMail: this.dataset.secondaryMail,
+                officeHour: this.dataset.officeHour,
+                address: this.dataset.address,
+                googleMap: this.dataset.googleMap
+              };
+              updateContactModal(contactData);
+            });
+          });
+        });
+      </script>
+      
+
+    <script>
+        function removeSocialItem(itemId) {
+            document.getElementById(itemId).remove();
+        }
+        
+        function addNewSocialItem() {
+            const newIndex = document.querySelectorAll('.accordion-item').length;
+            const template = `
+                <div class="accordion-item social-item mb-2" id="social-item-new-${newIndex}">
+                    <h2 class="accordion-header" id="social-heading-new-${newIndex}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#social-collapse-new-${newIndex}" aria-expanded="true">
+                            New Social Media
+                        </button>
+                    </h2>
+                    <div id="social-collapse-new-${newIndex}" class="accordion-collapse collapse show"
+                         data-bs-parent="#socialMediaAccordion">
+                        <div class="accordion-body">
+                            <div class="mb-3">
+                                <label class="form-label">Platform</label>
+                                <input type="text" class="form-control" name="socials[${newIndex}][platform]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Icon Class</label>
+                                <input type="text" class="form-control" name="socials[${newIndex}][icon]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">URL</label>
+                                <input type="url" class="form-control" name="socials[${newIndex}][url]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Sort Order</label>
+                                <input type="number" class="form-control" name="socials[${newIndex}][sortOrder]" value="${newIndex + 1}" required>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="removeSocialItem('social-item-new-${newIndex}')">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('newSocialContainer').insertAdjacentHTML('beforeend', template);
+        }
+        </script>
+
+        

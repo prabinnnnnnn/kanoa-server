@@ -1,0 +1,246 @@
+<%- contentFor('HeaderCss') %>
+    <!-- quill css -->
+    <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+    <%- contentFor('body') %>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+                    <form action="/services/create" id="serviceForm" method="post" onsubmit="updateContent(event);"
+                        enctype="multipart/form-data">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#servicesContent"
+                                            role="tab">
+                                            <i class="ri-pages-line align-middle me-1"></i> Service Content
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#feature" role="tab">
+                                            <i class="ri-question-line align-middle me-1"></i> Features
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#faq" role="tab">
+                                            <i class="ri-question-line align-middle me-1"></i> FAQ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#goal" role="tab">
+                                            <i class="ri-file-search-line align-middle me-1"></i> Goals
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#process" role="tab">
+                                            <i class="ri-file-search-line align-middle me-1"></i> Process
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#seo" role="tab">
+                                            <i class="ri-file-search-line align-middle me-1"></i> SEO
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="servicesContent" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="mb-3">
+                                                    <div class="card-body">
+                                                        <div class="row gy-4">
+                                                            <div class="col-12">
+                                                                <label for="ServiceCategoryId"
+                                                                    class="form-label">Service Category</label>
+                                                                <select class="form-select" id="ServiceCategoryId"
+                                                                    name="serviceCategoryId" required>
+                                                                    <option value="" selected disabled>Select...
+                                                                    </option>
+                                                                    <% service_categories.forEach(function(category) {
+                                                                        %>
+                                                                        <option value="<%= category.id %>">
+                                                                            <%= category.title %>
+                                                                        </option>
+                                                                        <% }); %>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="title" class="form-label">Service
+                                                                    Title</label>
+                                                                <input type="text" class="form-control" id="title"
+                                                                    name="title" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="slug" class="form-label">Slug</label>
+                                                                <input type="text" class="form-control" id="slug"
+                                                                    name="slug" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="icon" class="form-label">Icon class</label>
+                                                                <input type="text" class="form-control" id="icon"
+                                                                    name="icon"
+                                                                    placeholder="Luice icon class are required">
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="coverImage" class="form-label">Cover
+                                                                    Image</label>
+                                                                <input type="file" class="form-control" id="coverImage"
+                                                                    name="coverImage" accept="image/*"
+                                                                    onchange="previewImage(event)" required>
+                                                                <img id="imagePreview" src="#" alt="Image Preview"
+                                                                    class="d-none mt-2 w-25 img-fluid" />
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="description"
+                                                                    class="form-label">Description</label>
+                                                                <textarea name="description" id="description"
+                                                                    class="form-control" rows="5"></textarea>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="content" class="form-label">Content</label>
+                                                                <textarea name="content" id="content"
+                                                                    class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="feature" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <fieldset>
+                                                    <legend>Features</legend>
+                                                    <div id="featureFields">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="button"
+                                                            class="btn btn-soft-primary waves-effect col-md-12"
+                                                            onclick="addFeature()">Add New Feature Item</button>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="faq" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <fieldset>
+                                                    <legend>Frequently Asked Questions</legend>
+                                                    <div id="faqFields">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="button"
+                                                            class="btn btn-soft-primary waves-effect col-md-12"
+                                                            onclick="addFAQ()">Add New FAQ Item</button>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="tab-pane" id="goal" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <fieldset>
+                                                    <legend>Service Goals</legend>
+                                                    <div id="goalFields">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="button"
+                                                            class="btn btn-soft-primary waves-effect col-md-12"
+                                                            onclick="addGoals()">Add New Goals Item</button>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="process" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <fieldset>
+                                                    <legend>Service Process</legend>
+                                                    <div id="processFields">
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="button"
+                                                            class="btn btn-soft-primary waves-effect col-md-12"
+                                                            onclick="addProcess()">Add New Process</button>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="seo" role="tabpanel">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ms-2">
+                                                <div class="card-body">
+                                                    <div class="row gy-4">
+                                                        <div class="col-md-6">
+                                                            <label for="seoTitle" class="form-label">SEO Title</label>
+                                                            <input type="text" class="form-control" id="seoTitle"
+                                                                name="seoTitle">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="canonicalUrl" class="form-label">Canonical
+                                                                URL</label>
+                                                            <input type="url" class="form-control" id="canonicalUrl"
+                                                                name="canonicalUrl">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="robots" class="form-label">Robots</label>
+                                                            <textarea class="form-control" id="robots" name="robots"
+                                                                rows="2"></textarea>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="keywords" class="form-label">Keywords</label>
+                                                            <textarea class="form-control" id="keywords" name="keywords"
+                                                                rows="2"></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="seoDescription" class="form-label">SEO
+                                                                Description</label>
+                                                            <textarea class="form-control" id="seoDescription"
+                                                                name="seoDescription" rows="3"></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="schema" class="form-label">Schema</label>
+                                                            <textarea class="form-control" id="schema" name="schema"
+                                                                rows="7"
+                                                                placeholder="Enter your JSON-LD or other schema markup here"></textarea>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card-body -->
+                        </div><!-- end card -->
+
+                        <div class="card card-body">
+                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+                        </div>
+                    </form>
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>
+            <script src="/assets/js/main/tinymce.js"></script>
+            <script src="/assets/js/main/addCommon.js"></script>
+            <script src="/assets/js/service/addService.js"></script>

@@ -1,0 +1,67 @@
+<%- contentFor('HeaderCss') %>
+    <%- contentFor('body') %>
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+                    <form action="/album/create" method="post" enctype="multipart/form-data">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1 ms-2">
+                                        <div class="mb-3">
+                                            <div class="card-body">
+                                                <div class="row gy-4">
+                                                    <div class="col-12">
+                                                        <label for="artistId" class="form-label">Artist</label>
+                                                        <select class="form-select" id="artistId" name="artistId"
+                                                            required>
+                                                            <option value="" selected disabled>Select...
+                                                            </option>
+                                                            <% artists.forEach(function(artist) { %>
+                                                                <option value="<%= artist.id %>">
+                                                                    <%= artist.name %>
+                                                                </option>
+                                                                <% }); %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="title" class="form-label">title</label>
+                                                        <input type="text" class="form-control" id="title" name="title"
+                                                            required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="slug" class="form-label">Slug</label>
+                                                        <input type="text" class="form-control" id="slug" name="slug"
+                                                            required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="description" class="form-label">Description</label>
+                                                        <textarea name="description" id="description"
+                                                            class="form-control" rows="5"></textarea>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="coverImage" class="form-label">
+                                                            Image</label>
+                                                        <input type="file" class="form-control" id="image" name="image"
+                                                            accept="image/*" onchange="previewImage(event)">
+                                                        <img id="imagePreview" src="#" alt="Image Preview"
+                                                            class="d-none mt-2 w-25 img-fluid" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card card-body">
+                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+                        </div>
+                    </form>
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>
+            <script src="/assets/js/main/tinymce.js"></script>
+            <script src="/assets/js/main/addCommon.js"></script>

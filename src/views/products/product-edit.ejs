@@ -1,0 +1,490 @@
+<%- contentFor('HeaderCss') %>
+    <%- contentFor('body') %>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#content" role="tab">
+                                        <i class="ri-pages-line align-middle me-1"></i> Content
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#features" role="tab">
+                                        <i class="ri-list-check align-middle me-1"></i> Features
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#benefits" role="tab">
+                                        <i class="ri-list-check align-middle me-1"></i> Benefits
+                                    </a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#faq" role="tab">
+                                        <i class="ri-question-line align-middle me-1"></i> FAQ
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#images" role="tab">
+                                        <i class="ri-image-line align-middle me-1"></i> Images
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#seo" role="tab">
+                                        <i class="ri-file-search-line align-middle me-1"></i> SEO
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="content" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="mb-3">
+                                                <div class="card-body border">
+                                                    <form action="/products/update-content/<%= product.id %>" id="serviceForm" method="post" onsubmit="updateContent(event);" enctype="multipart/form-data">
+                                                        <div class="row gy-4">
+                                                            <div class="col-md-6">
+                                                                <label for="title" class="form-label">Product
+                                                                    Title</label>
+                                                                <input type="text" class="form-control" id="title" name="title" value="<%= product.title %>" required placeholder="Enter product title">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="slug" class="form-label">Slug</label>
+                                                                <input type="text" class="form-control" id="slug" name="slug" value="<%= product.slug %>" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="viewDemo" class="form-label">Demo Link</label>
+                                                                <input type="url" class="form-control" id="viewDemo" name="viewDemo" value="<%= product.viewDemo %>" required>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="image" class="form-label">Current
+                                                                    Image</label><br>
+                                                                <img src="/<%= product.image %>" alt="Cover Image" class="img-fluid mt-2" style="width: 100px; height: 100px;">
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="image" class="form-label">Cover
+                                                                    Image</label>
+                                                                <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)">
+                                                                <img id="imagePreview" src="#" alt="Image Preview" class="d-none mt-2 w-25 img-fluid" />
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="description" class="form-label">Description</label>
+                                                                <textarea name="description" id="description" class="form-control" rows="5"><%= product.description %></textarea>
+                                                            </div>
+                                                            <div class="col-12 mb-3">
+                                                                <label for="content" class="form-label">Content</label>
+                                                                <textarea id="content" name="content"><%= product.content %></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Update
+                                                                Content</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="features" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="mb-4">
+                                                <form id="featureForm" action="/products/update-features/<%= product.id %>" method="post">
+                                                    <div class="accordion" id="featureAccordion">
+                                                        <% if(features && features.length> 0) { %>
+                                                            <% features.forEach((feature, index)=> { %>
+                                                                <div class="accordion-item  mb-2 feature-item" id="feature-item-new-<%=index%>">
+                                                                    <h2 class="accordion-header" id="heading-new-<%=index%>">
+                                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#feature-collapse-<%=index%>" aria-expanded="false" aria-controls="feature-collapse-<%= index %>">
+                                                                            <%=feature.title%>
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="feature-collapse-<%=index%>" class="accordion-collapse collapse" data-bs-parent="#featureAccordion">
+                                                                        <div class="accordion-body">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Title</label>
+                                                                                <input type="text" class="form-control faq-question" name="features[<%=index%>][title]" value="<%=feature.title%>" required>
+                                                                            </div>
+                                                                            <div class="col-12 mb-3">
+                                                                                <div class="">
+                                                                                    <label for="featureDescription<%=index%>">Description</label>
+                                                                                    <textarea rows="5" type="text" class="form-control" id="featureDescription<%=index%>" name="features[<%=index%>][description]" placeholder="Enter value" required><%= feature.description %></textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-12 mb-3">
+                                                                                <div class="form-floating">
+                                                                                    <input type="text" class="form-control" id="featureIconClass<%=index%>" name="features[<%=index%>][iconClass]" value="<%=feature.iconClass%>" placeholder="Enter value" required>
+                                                                                    <label for="featureIconClass<%=index%>">IconClass</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-12 mb-3">
+                                                                                <div class="form-floating">
+                                                                                    <input type="text" class="form-control" id="featureIconClass<%=index%>" name="features[<%=index%>][keys]" value="<%=feature.keys%>" placeholder="Enter value" required>
+                                                                                    <label for="featureIconClass<%=index%>">Benefit Keys</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-12 mb-3">
+                                                                                <div class="form-floating">
+                                                                                    <input type="number" class="form-control" id="featureSortOrder<%=index%>" name="features[<%=index%>][sortOrder]" value="<%=feature.sortOrder%>" required>
+                                                                                    <label for="featureSortOrder<%=index%>">Sort Order</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="text-end">
+                                                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeFeatureItem('feature-item-new-<%=index%>')">Remove Feature</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <% }) %>
+                                                                    <% } %>
+                                                    </div>
+
+                                                    <div id="featureFields"></div>
+
+                                                    <div class="text-center mt-3 mb-3">
+                                                        <button type="button" class="btn btn-soft-primary waves-effect" onclick="addFeature()">
+                                                            <i class="ri-add-line align-middle me-1"></i> Add New Feature
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="text-end">
+                                                        <button type="submit" class="btn btn-secondary">Update All Feature</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="benefits" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="mb-4">
+                                                <form id="" action="/products/update-benefits/<%= product.id %>" method="post">
+                                                    <div class="accordion" id="featureAccordion">
+                                                        <% if(benefits && benefits.length> 0) { %>
+                                                            <% benefits.forEach((benefit, index)=> { %>
+                                                                <div class="accordion-item  mb-2 benefit-item" id="benefit-item-<%=index%>">
+                                                                    <h2 class="accordion-header " id="heading-new-<%=index%>">
+                                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#benefit-collapse-<%=index%>" aria-expanded="false" aria-controls="benefit-collapse-<%= index %>">
+                                                                         <%=benefit.title%>
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="benefit-collapse-<%=index%>" class="accordion-collapse collapse" data-bs-parent="#benefitAccordion">
+                                                                        <div class="mb-3 benefit-item  accordion-body">
+                                                                            <div class="card">
+                                                                                <div class="card-body">
+                                                                                    <div class="row align-items-center">
+                                                                                        <div class="col-12 mb-3">
+                                                                                            <div class="form-floating">
+
+                                                                                                <input type="text" class="form-control" id="benefitMainTitle-<%=index%>" name="benefits[<%=index%>][title]" placeholder="Enter title" required value="<%=benefit.title%>">
+                                                                                                <label for="benefitMainTitle-<%=index%>">Title</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-12 mb-3">
+                                                                                            <div class="form-floating">
+                                                                                                <textarea rows="3" class="form-control" id="benefitDescription-<%=index%>" name="benefits[<%=index%>][description]" placeholder="Enter description" required><%=benefit.description%></textarea>
+                                                                                                <label for="benefitDescription-<%=index%>">Description</label>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="col-12 mb-3">
+                                                                                            <% if (benefit.benefit_keys && benefit.benefit_keys.length> 0) { %>
+                                                                                                <% benefit.benefit_keys.forEach((key, keyIndex)=> { %>
+                                                                                                    <div class="mb-3 benefit-title-item" id="benefit-title-item-<%= index %>-<%= keyIndex %>">
+                                                                                                        <div class="card">
+                                                                                                                <div class="card-body">
+                                                                                                                    <div class="row align-items-center">
+                                                                                                                        <div class="col-12 mb-3">
+                                                                                                                            <div class="form-floating">
+                                                                                                                                <input type="text" class="form-control" name="benefits[<%= index %>][benefitKeys][<%= keyIndex %>][title]" placeholder="Enter benefit key" required value="<%= key.benefitKeyTitle %>">
+                                                                                                                                <label>Benefit Key</label>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="col-md-1 col-2 flex-end">
+                                                                                                                            <button type="button" class="btn btn-outline-danger" onclick="removeBenefit('benefit-title-item-<%= index %>-<%= keyIndex %>')">
+                                                                                                                                Remove
+                                                                                                                            </button>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <% }) %>
+                                                                                                        <% } %>
+                                                                                                            <div id="benefitTitleFields-<%= index %>"></div>
+                                                                                                            <div class="text-left mt-3 mb-3">
+                                                                                                                <button type="button" class="btn btn-soft-primary waves-effect" onclick="addBenefitTitle('<%= index %>')">
+                                                                                                                    <i class="ri-add-line align-middle me-1"></i> Add Benefit Keys
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-1 col-2 flex-end">
+                                                                                            <button type="button" class="btn btn-outline-danger" onclick="removeBenefit('benefit-item-<%=index%>')">
+                                                                                                <i class="ri-delete-bin-line"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <% }) %>
+                                                                    <% } %>
+                                                    </div>
+
+                                                    <div id="benefitFields"></div>
+
+                                                    <div class="text-center mt-3 mb-3">
+                                                        <button type="button" class="btn btn-soft-primary waves-effect" onclick="addBenefits()">
+                                                            <i class="ri-add-line align-middle me-1"></i> Add New Benefits
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="text-end">
+                                                        <button type="submit" class="btn btn-secondary">Update All Benefits</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="images" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1  ms-2">
+                                            <div class="mb-4">
+                                                <div class="accordion" id="imageAccordion">
+                                                    <% if(images && images.length> 0) { %>
+                                                        <% images.forEach((image, index)=> { %>
+                                                            <div class="accordion-item image-item mb-2" id="image-item-<%= index %>">
+                                                                <h2 class="accordion-header" id="imageHeading<%= index %>">
+                                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#imageCollapse<%= index %>" aria-expanded="false" aria-controls="imageCollapse<%= index %>">
+                                                                        <%= image.altText %>
+                                                                    </button>
+                                                                </h2>
+                                                                <div id="imageCollapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="imageHeading<%= index %>" data-bs-parent="#imageAccordion">
+                                                                    <div class="accordion-body">
+                                                                        <form action="/products/update-images/<%= image.id %>" method="POST" class="image-update-form" enctype="multipart/form-data">
+                                                                            <div class="mb-3">
+                                                                                <img src="/<%= image.imagePath %>" class="img-fluid mb-3" alt="<%= image.altText %>" height="200px" width="200px">
+                                                                            </div>
+                                                                            <div class="col-12 mb-3">
+                                                                                <label for="image" class="form-label">Image</label>
+                                                                                <input type="file" class="form-control" id="newImage" name="newImage" accept="image/*" onchange="singlePreviewImage(event)">
+                                                                                <img id="singleImagePreview" src="#" alt="Image Preview" class="d-none mt-2 w-25 img-fluid" />
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Alt
+                                                                                    Text</label>
+                                                                                <input type="text" class="form-control image-alt" name="altText" value="<%= image.altText %>" required>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Sort
+                                                                                    Order</label>
+                                                                                <input type="number" class="form-control image-sort" name="sortOrder" value="<%= image.sortOrder %>" required>
+                                                                            </div>
+                                                                            <div class="text-end">
+                                                                                <button type="submit" class="btn btn-primary btn-sm me-2">Update
+                                                                                    Image</button>
+                                                                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteProductImage('<%= image.id %>', 'image-item-<%= index %>')">Delete
+                                                                                    Image</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <% }) %>
+                                                                <% } %>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <form action="/products/upload-images/<%= product.id %>" method="POST" enctype="multipart/form-data" id="addImageForm">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <label for="productImages" class="form-label">Add New Product Images</label>
+                                                                <input type="file" class="form-control" id="productImages" name="productImages" accept="image/*" multiple onchange="previewMultipleImages(event)">
+                                                                <div id="imagePreviewContainer" class="row mt-3">
+                                                                </div>
+                                                            </div>
+                                                            <div id="imageDetailsContainer">
+                                                                <!-- Image details will be added here dynamically -->
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="alert alert-info">
+                                                                    <small>
+                                                                        All images will be used as product preview
+                                                                        images.
+                                                                        For each image, you can specify an alt text and
+                                                                        sort order.
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                            <template id="imageDetailsTemplate">
+                                                                <div class="col-12 mb-3 image-details">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <div class="row">
+                                                                                <div class="col-md-8">
+                                                                                    <label class="form-label">Alt
+                                                                                        Text</label>
+                                                                                    <input type="text" class="form-control" name="imageAltTexts[]" required>
+                                                                                </div>
+                                                                                <div class="col-md-4">
+                                                                                    <label class="form-label">Sort
+                                                                                        Order</label>
+                                                                                    <input type="number" class="form-control" name="imageSortOrders[]" min="0" required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </template>
+                                                            <div class="text-end mt-3">
+                                                                <button type="submit" class="btn btn-secondary">Upload
+                                                                    All Images</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="faq" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="mb-4">
+                                                <form id="faqForm" action="/products/update-faqs/<%= product.id %>" method="post">
+                                                    <div class="accordion" id="faqAccordion">
+                                                        <% if(faqs && faqs.length> 0) { %>
+                                                            <% faqs.forEach((faq, index)=> { %>
+                                                                <div class="accordion-item faq-item mb-2" id="faq-item-<%= index %>">
+                                                                    <h2 class="accordion-header" id="heading<%= index %>">
+                                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= index %>" aria-expanded="false" aria-controls="collapse<%= index %>">
+                                                                            <%= faq.question %>
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="heading<%= index %>" data-bs-parent="#faqAccordion">
+                                                                        <div class="accordion-body">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Question</label>
+                                                                                <input type="text" class="form-control faq-question" name="faqs[<%= index %>][question]" value="<%= faq.question %>" required>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Answer</label>
+                                                                                <textarea class="form-control faq-answer" name="faqs[<%= index %>][answer]" rows="3" required><%= faq.answer %></textarea>
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Sort Order</label>
+                                                                                <input type="number" class="form-control faq-sort" name="faqs[<%= index %>][sortOrder]" value="<%= faq.sortOrder %>" required>
+                                                                            </div>
+                                                                            <input type="hidden" name="faqs[<%= index %>][id]" value="<%= faq.id %>">
+                                                                            <div class="text-end">
+                                                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeFaqItem('faq-item-<%= index %>')">Remove
+                                                                                    FAQ</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <% }) %>
+                                                                    <% } %>
+                                                    </div>
+
+                                                    <div id="newFaqContainer"></div>
+
+                                                    <div class="text-center mt-3 mb-3">
+                                                        <button type="button" class="btn btn-soft-primary waves-effect" onclick="addNewFaqItem()">
+                                                            <i class="ri-add-line align-middle me-1"></i> Add New FAQ
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="text-end">
+                                                        <button type="submit" class="btn btn-secondary">Update All
+                                                            FAQs</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="seo" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="card-body">
+                                                <form action="/products/update-seo/<%= product.id %>" method="POST">
+                                                    <div class="row gy-4">
+                                                        <div class="col-md-6">
+                                                            <label for="seoTitle" class="form-label">SEO Title</label>
+                                                            <input type="text" class="form-control" id="seoTitle" name="seoTitle" value="<%= seo?.seoTitle %>">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="canonicalUrl" class="form-label">Canonical
+                                                                URL</label>
+                                                            <input type="url" class="form-control" id="canonicalUrl" name="canonicalUrl" value="<%= seo?.canonicalUrl %>">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="robots" class="form-label">Robots</label>
+                                                            <textarea class="form-control" id="robots" name="robots" rows="2"><%= seo?.robots %></textarea>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="keywords" class="form-label">Keywords</label>
+                                                            <textarea class="form-control" id="keywords" name="keywords" rows="2"><%= seo?.keywords %></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="seoDescription" class="form-label">SEO
+                                                                Description</label>
+                                                            <textarea class="form-control" id="seoDescription" name="seoDescription" rows="3"><%= seo?.seoDescription %></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label for="schema" class="form-label">Schema</label>
+                                                            <textarea class="form-control" id="schema" name="schema" rows="10" placeholder="Enter your JSON-LD or other schema markup here"><%
+                                                        try {
+                                                            if (seo?.schema) {
+                                                                const parsed = JSON.parse(seo.schema);
+                                                                %><%= JSON.stringify(parsed, null, 2) %><%
+                                                            } else {
+                                                                %><%
+                                                            }
+                                                        } catch (e) {
+                                                            %><%= seo?.schema || '' %><%
+                                                        }
+                                                    %></textarea>
+                                                        </div>
+                                                        <div class="col-12 text-end">
+                                                            <button type="submit" class="btn btn-secondary">Update
+                                                                SEO</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!-- end card-body -->
+            </div><!-- end card -->
+
+        </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>
+            <script src="/assets/js/main/tinymce.js"></script>
+            <script src="/assets/js/_products/features.js"></script>
+            <script src="/assets/js/_products/benefits.js"></script>
+            <script src="/assets/js/main/editCommon.js"></script>
+            <script src="/assets/js/main/multiImagePreview.js"></script>
