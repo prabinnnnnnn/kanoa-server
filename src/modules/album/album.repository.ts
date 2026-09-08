@@ -1,11 +1,18 @@
 import { IRepository } from "../../types/crud.types.js";
-import { Album } from "./album.model.js";
+import { Artist } from "../artist/artist.model.js";
+import { Album } from "../../config/associations.js";
 import { AlbumCreationAttributes, AlbumUpdateAttributes } from "./album.types.js";
 
 export class AlbumRepository implements IRepository<Album, AlbumCreationAttributes, AlbumUpdateAttributes> {
 
     async getAll(): Promise<Album[]> {
-        return Album.findAll();
+        return Album.findAll({
+            include: {
+                model: Artist,
+                as: "artist",
+                attributes: ["name"]
+            }
+        });
     }
 
     async create(data: AlbumCreationAttributes): Promise<Album> {

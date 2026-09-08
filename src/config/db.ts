@@ -30,7 +30,7 @@ const connectDatabase = async (): Promise<void> => {
 
         // Only sync automatically during development
         if (env.NODE_ENV === "dev") {
-            await db.sync({ alter: true });
+            await db.sync();
             console.log("Database synchronized.");
         }
     } catch (error) {

@@ -10,3 +10,8 @@ Song.belongsTo(Album, { foreignKey: "albumId", as: "album" });
 
 Artist.hasMany(Song, { foreignKey: "artistId", as: "songs" });
 Song.belongsTo(Artist, { foreignKey: "artistId", as: "artist" });
+
+
+export {
+    Artist, Album, Song
+}

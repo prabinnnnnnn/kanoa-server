@@ -31,34 +31,51 @@ export class AlbumController {
     };
 
     create = async (req: Request, res: Response): Promise<void> => {
-        const album = await this.service.create(req.body);
+        try {
+            await this.service.create({
+                ...req.body,
+                coverImage: req.file?.path,
+            });
 
-        res.status(201).json({
-            success: true,
-            message: "Album created successfully",
-            data: album,
-        });
+            req.flash("success", "Album Created Successfully");
+            res.redirect("/albums");
+
+        } catch (error) {
+
+            req.flash("error", "Failed to Created Album");
+            res.redirect("/albums");
+        }
+
     };
 
     update = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
-        const album = await this.service.update(
-            req.params.id,
-            req.body
-        );
+        try {
+            const album = await this.service.update(
+                req.params.id,
+                {
+                    ...req.body,
+                    ...(req.file?.path && {
+                        coverImage: req.file.path
+                    })
+                }
+            );
 
-        if (!album) {
-            res.status(404).json({
-                success: false,
-                message: "Album not found",
-            });
-            return;
+            if (!album) {
+                req.flash("error", "Failed to Update Album");
+                res.redirect("/albums");
+                return;
+            }
+
+            req.flash("success", "Album Updated Successfully");
+            res.redirect("/albums");
+
         }
+        catch (error) {
+            const message = error instanceof Error ? error.message : "Failed to Update Album";
 
-        res.status(200).json({
-            success: true,
-            message: "Album updated successfully",
-            data: album,
-        });
+            req.flash("error", message);
+            res.redirect("/albums");
+        }
     };
 
     delete = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
@@ -71,10 +88,11 @@ export class AlbumController {
             });
             return;
         }
-
-        res.status(200).json({
-            success: true,
-            message: "Album deleted successfully",
-        });
+        req.flash("success", "Album Deleted Successfully");
+        res.redirect("/albums");
+        // res.status(200).json({
+        //     success: true,
+        //     message: "Album deleted successfully",
+        // });
     };
 }

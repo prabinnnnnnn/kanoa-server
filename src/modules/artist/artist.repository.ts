@@ -1,5 +1,5 @@
 import { IRepository } from "../../types/crud.types.js";
-import { Artist } from "./artist.model.js";
+import { Artist } from "../../config/associations.js";
 import { ArtistCreationAttributes, ArtistUpdateAttributes } from "./artist.types.js";
 
 export class ArtistRepository implements IRepository<Artist, ArtistCreationAttributes, ArtistUpdateAttributes> {

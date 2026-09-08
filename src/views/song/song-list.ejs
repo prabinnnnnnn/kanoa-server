@@ -17,8 +17,8 @@
                                     <div class="d-flex flex-wrap align-items-start gap-2">
                                         <button class="btn btn-soft-danger" id="remove-actions"
                                             onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
-                                        <a href="/albums/add" class="btn btn-success add-btn" id="create-btn"><i
-                                                class="ri-add-line align-bottom me-1"></i> Add Album</a>
+                                        <a href="/songs/add" class="btn btn-success add-btn" id="create-btn"><i
+                                                class="ri-add-line align-bottom me-1"></i> Add Song</a>
                                     </div>
                                 </div>
                             </div>
@@ -85,42 +85,64 @@
                                                 </th>
 
                                                 <th class="sort" data-sort="isPublished">Image</th>
-                                                <th class="sort" data-sort="artist">Artist</th>
-                                                <th class="sort" data-sort="title">Title</th>
-                                                <th class="sort" data-sort="slug">Slug</th>
+                                                <th class="sort" data-sort="title">Song Title</th>
+                                                <th class="sort" data-sort="slug">Artist</th>
+                                                <th class="sort" data-sort="slug">Album</th>
+                                                <th class="sort" data-sort="category">Popularity</th>
+                                                <th class="sort" data-sort="category">Trending</th>
                                                 <th class="sort" data-sort="action">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all">
-                                            <% if (albums && albums.length> 0) { %>
-                                                <% albums.forEach(album=> { %>
+                                            <% if (songs && songs.length> 0) { %>
+                                                <% songs.forEach(song=> { %>
                                                     <tr>
                                                         <th scope="row">
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    name="chk_child" value="<%= album.id %>">
+                                                                    name="chk_child" value="<%= song.id %>">
                                                             </div>
                                                         </th>
                                                         <td class="image">
-                                                            <img src="/<%= album.coverImage %>" alt="" height="60px" width="60px" style="object-fit: cover; border-radius: 8px;">
+                                                            <img src="/<%= song.image %>" alt="" height="60px" width="60px" style="object-fit: cover; border-radius: 8px;">
                                                         </td>
                                                         <td class="title">
-                                                            <span class="badge bg-primary">
-                                                                <%= album.artist.name %>
+                                                            <%= song.title %>
+                                                        </td>
+                                                        <td class="artist">
+                                                            <a href="#" class="badge bg-primary rounded-pill">
+                                                                <%= song.artist.name %>
+                                                            </a>
+                                                        </td>
+                                                        <td class="album">
+                                                            <% if (song.album) {%>
+                                                                <span class="badge bg-dark rounded-pill">
+                                                                    <%= song.album?.title %>
+                                                                </span>
+                                                                <% } else {%>
+                                                                    <span class="badge bg-danger rounded-pill">
+                                                                        No Album
+                                                                    </span>
+                                                                    <%} %>
+                                                        </td>
+                                                        <td class="isPublished">
+                                                            <span
+                                                                class="badge bg-<%= song.isPopular ? 'success' : 'danger' %>-subtle text-<%= song.isPopular ? 'success' : 'danger' %> text-uppercase">
+                                                                <%= song.isPopular ? "Yes" : "No" %>
                                                             </span>
                                                         </td>
-                                                        <td class="title">
-                                                            <%= album.title %>
-                                                        </td>
-                                                        <td class="slug">
-                                                            <%= album.slug %>
+                                                        <td class="isPublished">
+                                                            <span
+                                                                class="badge bg-<%= song.isTrending ? 'success' : 'danger' %>-subtle text-<%= song.isTrending ? 'success' : 'danger' %> text-uppercase">
+                                                                <%= song.isTrending ? "Yes" : "No" %>
+                                                            </span>
                                                         </td>
                                                         <td>
                                                             <ul class="list-inline hstack gap-2 mb-0">
                                                                 <li class="list-inline-item edit"
                                                                     data-bs-toggle="tooltip" data-bs-trigger="hover"
                                                                     data-bs-placement="top" title="Edit">
-                                                                    <a href="/albums/edit/<%= album.id %>"
+                                                                    <a href="/songs/edit/<%= song.id %>"
                                                                         class="text-primary d-inline-block edit-item-btn">
                                                                         <i class="ri-pencil-fill fs-16"></i>
                                                                     </a>
@@ -130,7 +152,7 @@
                                                                     title="Remove">
                                                                     <a class="text-danger d-inline-block remove-item-btn"
                                                                         data-bs-toggle="modal" href="#deleteRecordModal"
-                                                                        data-id="<%= album.id %>">
+                                                                        data-id="<%= song.id %>">
                                                                         <i class="ri-delete-bin-5-fill fs-16"></i>
                                                                     </a>
                                                                 </li>
@@ -140,7 +162,7 @@
                                                     <% }); %>
                                                         <% } else { %>
                                                             <tr>
-                                                                <td colspan="8" class="text-center">No Albums found
+                                                                <td colspan="8" class="text-center">No songs found
                                                                 </td>
                                                             </tr>
                                                             <% } %>
@@ -212,7 +234,7 @@
                     document.querySelectorAll('.remove-item-btn').forEach(btn => {
                         btn.addEventListener('click', function () {
                             const idToDelete = this.dataset.id;
-                            document.getElementById("deleteForm").action = "/album/delete/" + idToDelete;
+                            document.getElementById("deleteForm").action = "/song/delete/" + idToDelete;
                         });
                     });
                 });

@@ -31,13 +31,16 @@ class AlbumPage {
     }
 
 
-    renderAlbumEditPage = async (req: Request, res: Response) => {
+    renderAlbumEditPage = async (req: Request<{ id: string }>, res: Response) => {
+        const { id } = req.params;
+        const data = await this.albums.getById(id);
 
         res.render("album/album-edit.ejs", {
             title: 'Album Edit',
             page_title: 'Albums Edit',
             messages: req.flash(),
-            artists: await this.artists.getAll()
+            artists: await this.artists.getAll(),
+            data,
         })
     }
 

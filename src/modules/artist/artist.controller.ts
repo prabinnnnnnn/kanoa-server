@@ -51,17 +51,10 @@ export class ArtistController {
                 coverImage: coverImage?.path || "",
             });
 
-            // res.status(201).json({
-            //     success: true,
-            //     message: "artist created successfully",
-            //     data: artist,
-            // });
-
             req.flash('success', "Artist Created Successfully");
             res.redirect("/artists");
 
         } catch (error: any) {
-            console.error(error);
             req.flash('error', error.message);
             res.redirect("/artists");
         }

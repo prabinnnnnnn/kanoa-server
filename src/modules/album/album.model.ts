@@ -5,6 +5,7 @@ import { AlbumAttributes } from "./album.types.js";
 export class Album extends Model<InferAttributes<Album>, InferCreationAttributes<Album>> implements AlbumAttributes {
     declare id: string;
     declare title: string;
+    declare slug: string;
     declare coverImage: string | null;
     declare artistId: string;
     declare releaseDate: Date | null;
@@ -20,6 +21,11 @@ Album.init(
         title: {
             type: DataTypes.STRING(200),
             allowNull: false,
+        },
+        slug: {
+            type: DataTypes.STRING(150),
+            allowNull: false,
+            unique: true
         },
         coverImage: {
             type: DataTypes.STRING,

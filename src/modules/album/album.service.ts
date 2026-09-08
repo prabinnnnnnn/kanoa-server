@@ -20,10 +20,7 @@ export class AlbumService {
         return this.repository.create(data);
     }
 
-    async update(
-        id: string,
-        data: AlbumUpdateAttributes
-    ): Promise<Album | null> {
+    async update(id: string, data: AlbumUpdateAttributes): Promise<Album | null> {
         return this.repository.update(id, data);
     }
 

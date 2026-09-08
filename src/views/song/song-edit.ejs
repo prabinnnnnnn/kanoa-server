@@ -1,0 +1,122 @@
+<%- contentFor('HeaderCss') %>
+    <%- contentFor('body') %>
+        <div class="row">
+            <div class="col-xl-12">
+                <%- include ('../partials/messages') %>
+                    <form action="/song/update/<%=data.id%>" method="post" enctype="multipart/form-data">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1 ms-2">
+                                        <div class="mb-3">
+                                            <div class="card-body">
+                                                <div class="row gy-4">
+                                                    <div class="col-6">
+                                                        <label for="artistId" class="form-label">Artist</label>
+                                                        <select class="form-select" id="artistId" name="artistId"
+                                                            required>
+                                                            <option value="<%= data.artistId %>" selected disabled>Select...
+                                                            </option>
+                                                            <% artists.forEach(function(artist) { %>
+                                                                <option value="<%= artist.id %>"
+                                                                    <%=data.artistId===artist.id ? 'selected'
+                                                                    : '' %>><%= artist.name %>
+                                                                </option>
+                                                                <% }); %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label for="albumId" class="form-label">Album</label>
+                                                        <select class="form-select" id="albumId" name="albumId"
+                                                            required>
+                                                            <option value="<%= data.albumId %>" selected disabled>Select...
+                                                            </option>
+                                                            <% albums.forEach(function(album) { %>
+                                                                <option value="<%= album.id %>"
+                                                                    <%=data.albumId===album.id ? 'selected'
+                                                                    : '' %>><%= album.title %>
+                                                                </option>
+                                                                <% }); %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="title" class="form-label">Title</label>
+                                                        <input type="text" class="form-control" id="title" name="title" value="<%=data.title%>"
+                                                            required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="slug" class="form-label">Slug</label>
+                                                        <input type="text" class="form-control" id="slug" name="slug" value="<%=data.slug%>" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="audioUrl" class="form-label">Audio URL</label>
+                                                        <textarea name="audioUrl" id="audioUrl" class="form-control" rows="5">value="<%=data.audioUrl%>"</textarea>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="isPopular" class="form-label">Popular?</label>
+
+                                                        <div class="form-check form-switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                class="form-check-input"
+                                                                id="isPopular"
+                                                                name="isPopular"
+                                                                <%=data.isPopular ? "checked" : "" %>
+                                                            >
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="isTrending" class="form-label">Trending?</label>
+
+                                                        <div class="form-check form-switch">
+                                                            <input
+                                                                type="checkbox"
+                                                                class="form-check-input"
+                                                                id="isTrending"
+                                                                name="isTrending"
+                                                                <%=data.isTrending ? "checked" : "" %>
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <%console.log(data)%>
+                                                        <div class="col-12">
+                                                            <label for="image" class="form-label">
+                                                                Image</label>
+                                                            <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)">
+                                                        </div>
+                                                        <div class="d-flex flex-column">
+                                                            <label for="image" class="form-label">Current Image</label>
+                                                            <img id="imagePreview" src="/<%=data.image%>" alt="Image Preview" style="height: 100px; width: 100px; object-fit: cover;" class="mt-2 w-10 img-fluid" />
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="coverImage" class="form-label"> Cover Image</label>
+                                                            <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*" onchange="previewImage(event)">
+                                                        </div>
+                                                        <div class="d-flex flex-column">
+                                                            <label for="coverImage" class="form-label">Current Cover Image</label>
+                                                            <img id="imagePreview" src="/<%=data.coverImage%>" alt="Image Preview" style="height: 100px; width: 100px; object-fit: cover;" class="mt-2 w-10 img-fluid" />
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="content" class="form-label">Content</label>
+                                                            <textarea name="content" id="content" class="form-control"
+                                                                rows="5"><%=data.content%></textarea>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card card-body">
+                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+                        </div>
+                    </form>
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+        <%- contentFor('FooterJs') %>
+            <script src="/assets/js/main/tinymce.js"></script>
+            <script src="/assets/js/main/addCommon.js"></script>
