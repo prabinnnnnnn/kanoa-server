@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-
 dotenv.config();
 
 type ENV = {
@@ -16,6 +15,7 @@ type ENV = {
     PORT: number,
     HOST: string,
 
+    REDIS_URL: string;
 };
 
 const env: ENV = {
@@ -32,7 +32,10 @@ const env: ENV = {
     CLIENT_URL: process.env.CLIENT_URL || "http://localhost:3000",
     SERVER_URL: process.env.SERVER_URL || "http://localhost:8000",
     HOST: process.env.HOST || "localhost",
-    PORT: Number(process.env.PORT) || 8000
+    PORT: Number(process.env.PORT) || 8000,
+
+    // Redis
+    REDIS_URL: process.env.REDIS_URL || "redis://localhost:6379"
 };
 
 export default env;

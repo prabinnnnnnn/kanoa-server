@@ -1,5 +1,5 @@
 import { IRepository } from "../../types/crud.types.js";
-import { Artist } from "../../config/associations.js";
+import { Album, Artist } from "../../config/associations.js";
 import { ArtistCreationAttributes, ArtistUpdateAttributes } from "./artist.types.js";
 
 export class ArtistRepository implements IRepository<Artist, ArtistCreationAttributes, ArtistUpdateAttributes> {
@@ -30,5 +30,17 @@ export class ArtistRepository implements IRepository<Artist, ArtistCreationAttri
 
     async getById(id: string): Promise<Artist | null> {
         return Artist.findByPk(id);
+    }
+
+    async getBySlug(slug: string): Promise<Artist | null> {
+        return Artist.findOne({
+            where: { slug },
+            include: [
+                {
+                    association: "albums",
+                    attributes: ["id", "title", "slug", "coverImage"],
+                }
+            ]
+        });
     }
 }

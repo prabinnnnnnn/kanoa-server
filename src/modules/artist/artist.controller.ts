@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { ArtistService } from "./artist.service.js";
 
 export class ArtistController {
-    constructor(private readonly service: ArtistService) { }
 
+    constructor(private readonly service: ArtistService) { }
 
     getAll = async (req: Request, res: Response): Promise<void> => {
         const artists = await this.service.getAll();
@@ -11,6 +11,7 @@ export class ArtistController {
         res.status(200).json({
             success: true,
             data: artists,
+            message: "Artists retrieved successfully",
         });
     };
 
@@ -20,7 +21,25 @@ export class ArtistController {
         if (!artist) {
             res.status(404).json({
                 success: false,
-                message: "artist not found",
+                message: "Artist not found",
+            });
+            return;
+        }
+
+        res.status(200).json({
+            success: true,
+            data: artist,
+        });
+    };
+
+    getBySlug = async (req: Request<{ slug: string }>, res: Response): Promise<void> => {
+        const { slug } = req.params
+        const artist = await this.service.getBySlug(slug);
+
+        if (!artist) {
+            res.status(404).json({
+                success: false,
+                message: "Artist not found",
             });
             return;
         }
@@ -75,12 +94,10 @@ export class ArtistController {
             genre: req.body.genre || null,
             content: req.body.content || null,
 
-            // Only include image if a new one was uploaded
             ...(image && {
                 image: image.path,
             }),
 
-            // Only include cover image if a new one was uploaded
             ...(coverImage && {
                 coverImage: coverImage.path,
             }),

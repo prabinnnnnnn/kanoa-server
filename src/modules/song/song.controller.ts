@@ -76,11 +76,9 @@ export class SongController {
                 {
                     ...req.body,
 
-                    // Checkbox values
                     isPopular: req.body.isPopular === "on",
                     isTrending: req.body.isTrending === "on",
 
-                    // Only replace images if a new file was uploaded
                     ...(image && {
                         image: image.path,
                     }),

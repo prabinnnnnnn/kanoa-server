@@ -23,6 +23,7 @@
         "fs": "^0.0.1-security",
         "multer": "^2.3.0",
         "mysql2": "^3.24.3",
+        "redis": "^6.2.1",
         "sequelize": "^6.37.8",
         "tinymce": "^8.9.0"
     },

@@ -15,6 +15,10 @@ export class AlbumRepository implements IRepository<Album, AlbumCreationAttribut
         });
     }
 
+    getBySlug(slug: string): Promise<Album | null> {
+        return Album.findOne({ where: { slug } })
+    }
+
     async create(data: AlbumCreationAttributes): Promise<Album> {
         return Album.create(data);
     }
