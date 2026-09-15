@@ -7,6 +7,8 @@ import {
 const PUBLIC_URLS = [
     "/auth/login",
     "/auth/register",
+    "/auth/register",
+    "/auth/verify-email",
 ];
 
 const PUBLIC_PATHS = [

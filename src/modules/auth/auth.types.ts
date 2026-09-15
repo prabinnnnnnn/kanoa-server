@@ -12,7 +12,8 @@ export interface UserAttributes {
     role: UserRoleENUM;
     isActive: boolean;
     isEmailVerified: boolean;
-
+    emailVerificationToken: string | null;
+    emailVerificationExpires: Date | null;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -22,6 +23,8 @@ export interface UserCreationAttributes {
     email: string;
     password: string;
     role: UserRoleENUM;
+    emailVerificationToken: string | null;
+    emailVerificationExpires: Date | null;
 }
 
 export interface UserUpdateAttributes {

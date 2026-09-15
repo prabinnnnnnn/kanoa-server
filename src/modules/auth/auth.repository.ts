@@ -8,6 +8,27 @@ export class AuthRepository implements IRepository<User, UserCreationAttributes,
         return User.findAll();
     }
 
+    async getUserByVerificationToken(token: string): Promise<User | null> {
+        return User.findOne({
+            where: {
+                emailVerificationToken: token,
+            },
+        });
+    }
+
+    async verifyEmail(id: string): Promise<void> {
+        await User.update(
+            {
+                isEmailVerified: true,
+                emailVerificationToken: null,
+                emailVerificationExpires: null,
+            },
+            {
+                where: { id },
+            },
+        );
+    }
+
     async create(data: UserCreationAttributes): Promise<User> {
         return User.create(data);
     }
@@ -32,9 +53,9 @@ export class AuthRepository implements IRepository<User, UserCreationAttributes,
         return User.findByPk(id);
     }
 
-    async getBySlug(slug: string): Promise<User | null> {
+    async getUserByEmail(email: string): Promise<User | null> {
         return User.findOne({
-            where: {},
+            where: { email },
         });
     }
 }

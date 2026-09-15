@@ -1,10 +1,11 @@
 import "express-session";
+import { UserRoleENUM } from "../modules/auth/auth.types.js";
 
 interface SessionUser {
     id: string;
     name: string;
     email: string;
-    role: "user" | "admin";
+    role: UserRoleENUM;
 }
 
 declare module "express-session" {

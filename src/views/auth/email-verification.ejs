@@ -1,0 +1,208 @@
+<%- contentFor('HeaderCss') %>
+    <%- include("../partials/title-meta", { "title" : "MFA Verification" }) %>
+
+        <%- contentFor('body') %>
+            <div class="auth-page-wrapper">
+                <!-- auth page bg -->
+                <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
+                    <div class="bg-overlay"></div>
+                    <div class="shape">
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
+                            <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- auth page content -->
+                <div class="auth-page-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-center mt-sm-5 mb-4 text-white-50">
+                                    <div>
+                                        <a href="/" class="d-inline-block auth-logo">
+                                            <img src="/logo.png" alt="Kanoa" height="40">
+                                        </a>
+                                    </div>
+                                    <p class="mt-3 fs-15 fw-medium">Kanoa - Secure Authentication</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <div class="row justify-content-center">
+                            <div class="col-md-8 col-lg-6 col-xl-5">
+                                <div class="card">
+                                    <div class="card-body p-4">
+                                        <div class="text-center mt-2">
+                                            <h5 class="text-primary">Email Verification</h5>
+                                            <p class="text-muted">Enter your verification code</p>
+                                        </div>
+                                        <div class="p-2 mt-4">
+                                            <%- include ('../partials/messages') %>
+
+                                                <form action="/auth/mfa" method="post" autocomplete="off">
+                                                    <div class="mb-3 text-center">
+                                                        <p>Enter the 6-digit code for </p>
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <div class="otp-input-group d-flex justify-content-center gap-2 mb-3">
+                                                            <% for (let i=1; i <=6; i++) { %>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control form-control-lg text-center otp-digit p-2"
+                                                                    maxlength="1"
+                                                                    id="digit<%= i %>"
+                                                                    name="digit<%= i %>"
+                                                                    inputmode="numeric"
+                                                                    pattern="[0-9]"
+                                                                    aria-label="Digit <%= i %> of verification code"
+                                                                    required
+                                                                    data-index="<%= i %>">
+                                                                <% } %>
+                                                        </div>
+                                                        <input type="hidden" name="token" id="token">
+                                                        <input type="hidden" name="clientTime" id="clientTime">
+                                                    </div>
+
+                                                    <div class="mt-4">
+                                                        <button class="btn btn-primary w-100 py-2" type="submit">
+                                                            <i class="fas fa-shield-alt me-2"></i> Verify Code
+                                                        </button>
+                                                    </div>
+                                                </form>
+
+                                                <div class="mt-4 text-center">
+                                                    <p class="mb-0">
+                                                        <a href="/auth/login" class="text-muted">
+                                                            <i class="fas fa-arrow-left me-1"></i> Back to login
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                        </div>
+                        <!-- end row -->
+                    </div>
+                    <!-- end container -->
+                </div>
+                <!-- end auth page content -->
+
+                <!-- footer -->
+                <footer class="footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-center">
+                                    <p class="mb-0 text-muted">&copy;
+                                        <script>
+                                            document.write(new Date().getFullYear())
+                                        </script> Kathmandu Infotech. Crafted with <i class="mdi mdi-heart text-danger"></i> by Kathmandu Infotech Pvt. Ltd.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- end Footer -->
+            </div>
+            <!-- end auth-page-wrapper -->
+
+            <%- contentFor('FooterJs') %>
+                <!-- particles js -->
+                <script src="/assets/libs/particles.js/particles.js"></script>
+                <!-- particles app js -->
+                <script src="/assets/js/pages/particles.app.js"></script>
+
+                <style>
+                    .otp-input-group .otp-digit {
+                        width: 50px;
+                        height: 60px;
+                        font-size: 1.5rem;
+                        border-radius: 8px;
+                        border: 2px solid #e0e0e0;
+                        transition: all 0.2s ease;
+                    }
+
+                    .otp-input-group .otp-digit:focus {
+                        border-color: #0d6efd;
+                        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+                        outline: none;
+                    }
+
+                    .otp-input-group .otp-digit.filled {
+                        border-color: #198754;
+                        background-color: rgba(25, 135, 84, 0.05);
+                    }
+                </style>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const digits = Array.from({ length: 6 }, (_, i) => document.getElementById(`digit${i + 1}`));
+
+                        // Handle input for each digit
+                        digits.forEach((digit, index) => {
+                            digit.addEventListener('input', function (e) {
+                                // Validate input
+                                this.value = this.value.replace(/\D/g, '');
+
+                                // Update styling
+                                if (this.value) {
+                                    this.classList.add('filled');
+                                } else {
+                                    this.classList.remove('filled');
+                                }
+
+                                // Move to next input if a digit is entered
+                                if (this.value.length === 1 && index < 5) {
+                                    digits[index + 1].focus();
+                                }
+
+                                updateToken();
+                            });
+
+                            // Handle backspace navigation
+                            digit.addEventListener('keydown', function (e) {
+                                if (e.key === 'Backspace' && !this.value && index > 0) {
+                                    digits[index - 1].focus();
+                                }
+                            });
+
+                            // Handle paste
+                            digit.addEventListener('paste', function (e) {
+                                e.preventDefault();
+                                const pasteData = e.clipboardData.getData('text').replace(/\D/g, '');
+                                if (pasteData.length >= 6) {
+                                    for (let i = 0; i < 6; i++) {
+                                        digits[i].value = pasteData[i] || '';
+                                        digits[i].classList.add('filled');
+                                    }
+                                    digits[5].focus();
+                                    updateToken();
+                                }
+                            });
+                        });
+
+                        // Auto-focus first digit on page load
+                        digits[0].focus();
+                    });
+
+                    // Combine digits into token
+                    function updateToken() {
+                        const token = Array.from({ length: 6 }, (_, i) =>
+                            document.getElementById(`digit${i + 1}`).value || ''
+                        ).join('');
+                        document.getElementById('token').value = token;
+                    }
+
+                    // Set clientTime on form submission
+                    document.querySelector('form').addEventListener('submit', function () {
+                        document.getElementById('clientTime').value = new Date().toISOString();
+                        updateToken(); // Ensure token is updated before submission
+                    });
+                </script>

@@ -1,236 +1,253 @@
 <%- contentFor('HeaderCss') %>
-  <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-  <%- contentFor('body') %>
-    <div class="row">
-      <div class="col-lg-12">
-        <%- include ('../partials/messages') %>
-          <div class="card" id="customerList">
-            <div class="card-header border-bottom-dashed">
+    <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <%- contentFor('body') %>
+        <div class="row">
+            <div class="col-lg-12">
+                <%- include ('../partials/messages') %>
+                    <div class="card" id="customerList">
+                        <div class="card-header border-bottom-dashed">
 
-              <div class="row g-4 align-items-center">
-                <div class="col-sm">
-                  <div>
-                    <h5 class="card-title mb-0">Users</h5>
-                  </div>
-                </div>
-                <div class="col-sm-auto">
-                  <div class="d-flex flex-wrap align-items-start gap-2">
-                    <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
-                        class="ri-delete-bin-2-line"></i></button>
-                    <a href="/auth/register" class="btn btn-success add-btn" id="create-btn"><i
-                        class="ri-add-line align-bottom me-1"></i> Add User</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-body border-bottom-dashed border-bottom">
-              <form>
-                <div class="row g-3">
-                  <div class="col-xl-6">
-                    <div class="search-box">
-                      <input type="text" class="form-control search" placeholder="Search here...">
-                      <i class="ri-search-line search-icon"></i>
-                    </div>
-                  </div>
-                  <!--end col-->
-                  <div class="col-xl-6">
-                    <div class="row g-3">
-                      <div class="col-sm-4">
-
-                      </div>
-                      <!--end col-->
-
-                      <div class="col-sm-4">
-                      </div>
-                      <!--end col-->
-                    </div>
-                  </div>
-                </div>
-                <!--end row-->
-              </form>
-            </div>
-            <div class="card-body">
-              <div>
-                <div class="table-responsive table-card mb-1">
-                  <table class="table align-middle" id="customerTable">
-                    <thead class="table-light text-muted">
-                      <tr>
-                        <th scope="col" style="width: 50px;">
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                          </div>
-                        </th>
-
-                        <th class="sort" data-sort="username">Username</th>
-                        <th class="sort" data-sort="email">Email</th>
-                        <th class="sort" data-sort="role">Role</th>
-                        <th class="sort" data-sort="action">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody class="list form-check-all">
-                      <% if (users.length> 0) { %>
-                        <% users.forEach(user=> { %>
-                          <tr>
-                            <th scope="row">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
-                              </div>
-                            </th>
-                            <td class="id" style="display:none;"><a href="javascript:void(0);"
-                                class="fw-medium link-primary">#VZ2101</a></td>
-                            <td class="username">
-                              <%= user.username %>
-                            </td>
-                            <td class="email">
-                              <%= user.email %>
-                            </td>
-                            <td class="role">
-                              <%if(user.role==='admin' ){%>
-                                <span class="badge rounded-pill text-bg-info">
-                                  <%= user.role %>
-                                </span>
-                                <%}else{%>
-                                  <span class="badge rounded-pill text-bg-secondary">
-                                    <%= user.role %>
-                                  </span>
-                                  <%}%>
-                            </td>
-                            <td>
-                              <ul class="list-inline hstack gap-2 mb-0">
-                                <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                  data-bs-placement="top" title="Edit">
-                                  <a class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal"
-                                    data-update-id="<%= user.id %>" href="#updateRecordModal">
-                                    <i class="ri-pencil-fill fs-16"></i>
-                                  </a>
-                                </li>
-                                <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                  data-bs-placement="top" title="Remove">
-                                  <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal"
-                                    data-id="<%= user.id %>" href="#deleteRecordModal">
-                                    <i class="ri-delete-bin-5-fill fs-16"></i>
-                                  </a>
-                                </li>
-                              </ul>
-                            </td>
-                          </tr>
-                          <% }) %>
-                            <% } else { %>
-                              <tr>
-                                <td colspan="5" class="text-center">No users found</td>
-                              </tr>
-                              <% } %>
-                    </tbody>
-                  </table>
-                  <div class="noresult" style="display: none">
-                    <div class="text-center">
-                      <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                        colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
-                      <h5 class="mt-2">Sorry! No Result Found</h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-end">
-                  <div class="pagination-wrap hstack gap-2">
-                    <a class="page-item pagination-prev disabled" href="#">
-                      Previous
-                    </a>
-                    <ul class="pagination listjs-pagination mb-0"></ul>
-                    <a class="page-item pagination-next" href="#">
-                      Next
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Delete User Modal -->
-              <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="btn-close" id="deleteRecord-close" data-bs-dismiss="modal"
-                        aria-label="Close" id="btn-close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="mt-2 text-center">
-                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                          colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                          <h4>Are you sure ?</h4>
-                          <p class="text-muted mx-4 mb-0">Are you sure you want to remove this record ?</p>
+                            <div class="row g-4 align-items-center">
+                                <div class="col-sm">
+                                    <div>
+                                        <h5 class="card-title mb-0">Users</h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div class="d-flex flex-wrap align-items-start gap-2">
+                                        <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
+                                                class="ri-delete-bin-2-line"></i></button>
+                                        <a href="/auth/register" class="btn btn-success add-btn" id="create-btn"><i
+                                                class="ri-add-line align-bottom me-1"></i> Add User</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <form action="" method="POST" id="deleteForm">
-                          <button type="submit" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--end modal -->
+                        <div class="card-body border-bottom-dashed border-bottom">
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-xl-6">
+                                        <div class="search-box">
+                                            <input type="text" class="form-control search" placeholder="Search here...">
+                                            <i class="ri-search-line search-icon"></i>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-xl-6">
+                                        <div class="row g-3">
+                                            <div class="col-sm-4">
+
+                                            </div>
+                                            <!--end col-->
+
+                                            <div class="col-sm-4">
+                                            </div>
+                                            <!--end col-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end row-->
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <div class="table-responsive table-card mb-1">
+                                    <table class="table align-middle" id="customerTable">
+                                        <thead class="table-light text-muted">
+                                            <tr>
+                                                <th scope="col" style="width: 50px;">Profile</th>
+                                                <th class="sort" data-sort="username">Username</th>
+                                                <th class="sort" data-sort="email">Email</th>
+                                                <th class="sort" data-sort="role">Role</th>
+                                                <th class="sort" data-sort="role">Status</th>
+                                                <th class="sort" data-sort="role">Email Verified</th>
+                                                <th class="sort" data-sort="action">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list form-check-all">
+                                            <% if (users.length> 0) { %>
+                                                <% users.forEach(user=> { %>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <img src="/assets/images/users/user-dummy-img.jpg" alt="user-img" height="40px" width="40px" class="rounded-circle" />
+                                                        </th>
+                                                        <td class="id" style="display:none;"><a href="javascript:void(0);"
+                                                                class="fw-medium link-primary">#VZ2101</a></td>
+                                                        <td class="username">
+                                                            <%= user.name %>
+                                                        </td>
+                                                        <td class="email">
+                                                            <%= user.email %>
+                                                        </td>
+                                                        <td class="role">
+                                                            <%if(user.role==='admin' ){%>
+                                                                <span class="badge rounded-pill text-bg-info">
+                                                                    <%= user.role %>
+                                                                </span>
+                                                                <%}else{%>
+                                                                    <span class="badge rounded-pill text-bg-secondary">
+                                                                        <%= user.role %>
+                                                                    </span>
+                                                                    <%}%>
+                                                        </td>
+                                                        <td class="role">
+                                                            <%if(user.isActive ){%>
+                                                                <span class="badge rounded-pill text-bg-info">
+                                                                    Active
+                                                                </span>
+                                                                <%}else{%>
+                                                                    <span class="badge rounded-pill text-bg-danger">
+                                                                        Deactive
+                                                                    </span>
+                                                                    <%}%>
+                                                        </td>
+                                                        <td class="role">
+                                                            <%if(user.isEmailVerified ){%>
+                                                                <span class="badge rounded-pill text-bg-info">
+                                                                    <i class="bi bi-patch-check m-1"></i>
+                                                                    Verified
+                                                                </span>
+                                                                <%}else{%>
+                                                                    <span class="badge rounded-pill text-bg-danger">
+                                                                        <i class="bi bi-patch-check m-1"></i>
+                                                                        Not Verified
+                                                                    </span>
+                                                                    <%}%>
+                                                        </td>
+                                                        <td>
+                                                            <ul class="list-inline hstack gap-2 mb-0">
+                                                                <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                                    data-bs-placement="top" title="Edit">
+                                                                    <a class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal"
+                                                                        data-update-id="<%= user.id %>" href="#updateRecordModal">
+                                                                        <i class="ri-pencil-fill fs-16"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                                    data-bs-placement="top" title="Remove">
+                                                                    <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal"
+                                                                        data-id="<%= user.id %>" href="#deleteRecordModal">
+                                                                        <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center">No users found</td>
+                                                            </tr>
+                                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                    <div class="noresult" style="display: none">
+                                        <div class="text-center">
+                                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                                                colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                                            <h5 class="mt-2">Sorry! No Result Found</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <div class="pagination-wrap hstack gap-2">
+                                        <a class="page-item pagination-prev disabled" href="#">
+                                            Previous
+                                        </a>
+                                        <ul class="pagination listjs-pagination mb-0"></ul>
+                                        <a class="page-item pagination-next" href="#">
+                                            Next
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Delete User Modal -->
+                            <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" id="deleteRecord-close" data-bs-dismiss="modal"
+                                                aria-label="Close" id="btn-close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mt-2 text-center">
+                                                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                                                    colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                                    <h4>Are you sure ?</h4>
+                                                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this record ?</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                                                <form action="" method="POST" id="deleteForm">
+                                                    <button type="submit" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end modal -->
 
 
-              <!-- Update User Modal -->
-              <div class="modal fade" id="updateRecordModal" tabindex="-1" aria-labelledby="updateClientModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-md">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="updateClientModalLabel">Reset Password</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="" method="POST" id="updateForm">
-                        <div class="mb-3">
-                          <label for="newPassword" class="form-label">New Password</label>
-                          <input type="text" class="form-control" id="newPassword" name="newPassword">
+                            <!-- Update User Modal -->
+                            <div class="modal fade" id="updateRecordModal" tabindex="-1" aria-labelledby="updateClientModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-md">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateClientModalLabel">Reset Password</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="" method="POST" id="updateForm">
+                                                <div class="mb-3">
+                                                    <label for="newPassword" class="form-label">New Password</label>
+                                                    <input type="text" class="form-control" id="newPassword" name="newPassword">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end modal -->
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                      </form>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <!--end modal -->
+
             </div>
-          </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
 
-      </div>
-      <!--end col-->
-    </div>
-    <!--end row-->
+        <%- contentFor('FooterJs') %>
 
-    <%- contentFor('FooterJs') %>
+            <!-- list.js min js -->
+            <script src="/assets/libs/list.js/list.min.js"></script>
+            <script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
 
-      <!-- list.js min js -->
-      <script src="/assets/libs/list.js/list.min.js"></script>
-      <script src="/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+            <!--ecommerce-customer init js -->
+            <script src="/assets/js/pages/ecommerce-customer-list.init.js"></script>
+            <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('.remove-item-btn').forEach(btn => {
+                        btn.addEventListener('click', function () {
+                            const idToDelete = this.dataset.id;
+                            document.getElementById("deleteForm").action = "/auth/users/" + idToDelete;
+                        });
+                    });
 
-      <!--ecommerce-customer init js -->
-      <script src="/assets/js/pages/ecommerce-customer-list.init.js"></script>
-      <script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
-      <!-- App js -->
-
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          document.querySelectorAll('.remove-item-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-              const idToDelete = this.dataset.id;
-              document.getElementById("deleteForm").action = "/auth/users/delete/" + idToDelete;
-            });
-          });
-
-          document.querySelectorAll('.edit-item-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-              const idToUpdate = this.dataset.updateId;
-              document.getElementById("updateForm").action = "/auth/admin/password-reset/" + idToUpdate;
-            });
-          });
-        });
-      </script>
+                    document.querySelectorAll('.edit-item-btn').forEach(btn => {
+                        btn.addEventListener('click', function () {
+                            const idToUpdate = this.dataset.updateId;
+                            document.getElementById("updateForm").action = "/auth/admin/password-reset/" + idToUpdate;
+                        });
+                    });
+                });
+            </script>

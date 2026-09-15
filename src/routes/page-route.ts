@@ -34,5 +34,7 @@ router.get("/songs/edit/:id", songPage.renderSongEditPage);
 router.get("/auth/login", authPage.renderLoginPage)
 router.get("/auth/register", authPage.renderRegisterPage)
 router.get("/auth/profile", authPage.renderProfilePage)
+router.get("/auth/users", authPage.renderUserListPage)
+// router.get("/auth/verify-email", authPage.renderEmailVerifyPage)
 
 export default router;

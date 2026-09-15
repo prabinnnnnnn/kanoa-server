@@ -4,5 +4,5 @@ export interface IRepository<T, CreateInput, UpdateInput> {
     delete(id: string): Promise<boolean>;
     getAll(): Promise<T[]>;
     getById(id: string): Promise<T | null>;
-    getBySlug(slug: string): Promise<T | null>;
+    // getBySlug(slug: string): Promise<T | null>;
 }

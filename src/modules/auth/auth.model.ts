@@ -17,6 +17,8 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     declare role: CreationOptional<UserRoleENUM>;
     declare isActive: CreationOptional<boolean>;
     declare isEmailVerified: CreationOptional<boolean>;
+    declare emailVerificationToken: string | null;
+    declare emailVerificationExpires: Date | null;
 }
 
 User.init(
@@ -59,6 +61,15 @@ User.init(
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
+        },
+        emailVerificationToken: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+
+        emailVerificationExpires: {
+            type: DataTypes.DATE,
+            allowNull: true,
         },
     },
     {

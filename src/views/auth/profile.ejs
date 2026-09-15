@@ -11,26 +11,29 @@
         </div>
         <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
             <%- include ('../partials/messages') %>
-                <div class="row g-4">
-                    <div class="col-auto">
-                        <div class="avatar-lg">
-                            <img src="/assets/images/users/user-dummy-img.jpg" alt="user-img"
-                                class="img-thumbnail rounded-circle" />
+                <%console.log(user)%>
+                    <div class="row g-4">
+                        <div class="col-auto">
+                            <div class="avatar-lg">
+                                <img src="/assets/images/users/user-dummy-img.jpg" alt="user-img"
+                                    class="img-thumbnail rounded-circle" />
+                            </div>
                         </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col">
-                        <div class="p-2">
-                            <h3 class="text-white mb-1">
-                                <%=user.username%>
-                            </h3>
-                            <span class="badge rounded-pill text-bg-info"><%=user.role%></span>
+                        <!--end col-->
+                        <div class="col">
+                            <div class="p-2">
+                                <h3 class="text-white mb-1">
+                                    <%=user.name%>
+                                </h3>
+                                <span class="badge rounded-pill text-bg-info">
+                                    <%=user.role%>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <!--end col-->
+                        <!--end col-->
 
-                </div>
-                <!--end row-->
+                    </div>
+                    <!--end row-->
         </div>
 
         <div class="row">
@@ -65,7 +68,7 @@
                                                         <tr>
                                                             <th class="ps-0" scope="row">User Name :</th>
                                                             <td class="text-muted">
-                                                                <%=user.username%>
+                                                                <%=user.name%>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -103,12 +106,11 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                         id="close-modal"></button>
                                 </div>
-                                <form class="tablelist-form" autocomplete="off" method="POST" id="edit-password"
-                                    action="/auth/users/password-reset/<%=user.id%>">
+                                <form method="post" action="/auth/users/change-password">
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label for="customername-field" class="form-label">Old Password</label>
-                                            <input type="text" id="customername-field" class="form-control"
+                                            <label for="oldPassword" class="form-label">Old Password</label>
+                                            <input type="text" id="oldPassword" class="form-control"
                                                 placeholder="Old Password" required name="oldPassword" />
                                             <div class="invalid-feedback">
                                                 <%messages%>
@@ -116,8 +118,8 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="email-field" class="form-label">New Password</label>
-                                            <input type="text" id="email-field" class="form-control"
+                                            <label for="newPassword" class="form-label">New Password</label>
+                                            <input type="text" id="newPassword" class="form-control"
                                                 placeholder="New Password" required name="newPassword" />
                                             <div class="invalid-feedback"></div>
                                         </div>

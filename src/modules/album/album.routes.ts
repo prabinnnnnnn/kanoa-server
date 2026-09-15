@@ -10,7 +10,7 @@ const albumController = new AlbumController(new AlbumService(new AlbumRepository
 // albumRoute.get("/", albumController.getAll);
 // albumRoute.get("/:id", albumController.getById);
 albumRoute.post("/create", albumUpload.single("coverImage"), albumController.create);
-albumRoute.post("/update/:id", albumUpload.single("coverImage"), albumController.update);
+albumRoute.patch("/update/:id", albumUpload.single("coverImage"), albumController.update);
 albumRoute.post("/delete/:id", albumController.delete);
 
 export default albumRoute;

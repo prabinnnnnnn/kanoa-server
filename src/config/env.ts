@@ -16,6 +16,12 @@ type ENV = {
     HOST: string,
 
     REDIS_URL: string;
+
+    MAIL_HOST: string
+    MAIL_PORT: number
+    MAIL_USER: string
+    MAIL_PASSWORD: string
+    MAIL_FROM: string
 };
 
 const env: ENV = {
@@ -35,7 +41,13 @@ const env: ENV = {
     PORT: Number(process.env.PORT) || 8000,
 
     // Redis
-    REDIS_URL: process.env.REDIS_URL || "redis://localhost:6379"
+    REDIS_URL: process.env.REDIS_URL || "redis://localhost:6379",
+
+    MAIL_HOST: process.env.MAIL_HOST || 'some',
+    MAIL_PORT: Number(process.env.MAIL_PORT) || 57,
+    MAIL_USER: process.env.MAIL_USER || "",
+    MAIL_PASSWORD: process.env.MAIL_PASSWORD || '',
+    MAIL_FROM: process.env.MAIL_FROM || '',
 };
 
 export default env;

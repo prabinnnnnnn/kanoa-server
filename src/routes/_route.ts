@@ -8,12 +8,12 @@ import authRouter from "../modules/auth/auth.routes.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 const router = Router();
 
-router.use("/", pageRouter);
 router.use("/api/v1", apiRouter);
 router.use("/auth", authRouter);
 
 router.use(authMiddleware);
 
+router.use("/", pageRouter);
 router.use("/album", albumRoute);
 router.use("/artist", artistRoute);
 router.use("/song", songRoute);
