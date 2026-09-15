@@ -27,27 +27,85 @@
                                                         <label for="genre" class="form-label">Genre</label>
                                                         <textarea name="genre" id="genre" class="form-control" rows="5"><%=artist.genre%></textarea>
                                                     </div>
+                                                    <!-- Cover Image -->
                                                     <div class="col-12">
-                                                        <label for="coverImage" class="form-label">Image</label>
-                                                        <input type="file" class="form-control" id="coverImage" name="image" accept="image/*" onchange="previewImage(event)">
-                                                        <img id="imagePreview" src="#" alt="Image Preview" height="100px" width="100px" class="d-none mt-2 img-fluid" />
-                                                    </div>
-                                                    <div class="d-flex flex-column gap-8">
-                                                        <label for="coverImage" class="form-label">Current Image</label>
-                                                        <img src="/<%=artist.image%>" alt="" height="100px" width="100px" class="img-fluid">
-                                                    </div>
-                                                    <div class="col-12 gap-8">
-                                                        <label for="coverImage"
-                                                            class="form-label">CoverImage</label>
-                                                        <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*" onchange="previewCoverImage(event)">
-                                                        <img id="coverImagePreview" src="#" alt="Image Preview" class="d-none mt-2 w-25 img-fluid" />
-                                                    </div>
-                                                    <div class="d-flex flex-column gap-8">
-                                                        <label for="coverImage" class="form-label">Current Cover Image</label>
-                                                        <img src="/<%=artist.coverImage%>" alt="" height="100px"
-                                                            width="100px" class="img-fluid w-25">
+                                                        <label for="coverImage">Cover Image</label>
+                                                        <div
+                                                            class="drop-image border border-2 border-secondary border-dashed rounded p-4 text-center"
+                                                            data-name="coverImage"
+                                                            data-existing-image="/<%=artist.coverImage%>"
+                                                            style="cursor: pointer;">
+
+                                                            <div class="upload-content">
+                                                                <i class="fa-solid fa-cloud-arrow-up fs-1 text-secondary"></i>
+                                                                <p class="mb-1 mt-2">Drag & drop your image here</p>
+                                                                <small class="text-muted">or click to select</small>
+                                                            </div>
+
+                                                            <input
+                                                                type="file"
+                                                                class="image-input"
+                                                                name="coverImage"
+                                                                accept="image/*"
+                                                                hidden>
+
+                                                            <div class="preview-content d-none mt-3">
+                                                                <img
+                                                                    class="image-preview img-fluid rounded"
+                                                                    src=""
+                                                                    alt="Image Preview"
+                                                                    style="max-height: 250px; display: none;">
+
+                                                                <div class="mt-2 d-flex justify-content-center align-items-center gap-2">
+                                                                    <span class="image-name small text-truncate"></span>
+                                                                    <span class="image-size small text-muted"></span>
+                                                                    <button type="button" class="remove-image btn btn-sm btn-outline-danger">
+                                                                        <i class="fa-solid fa-xmark"></i> Remove
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
+                                                    <!-- Image -->
+                                                    <div class="col-12">
+                                                        <label for="image">Image</label>
+                                                        <div
+                                                            class="drop-image border border-2 border-secondary border-dashed rounded p-4 text-center"
+                                                            data-name="image"
+                                                            data-existing-image="/<%=artist.image%>"
+                                                            style="cursor: pointer;">
+
+                                                            <div class="upload-content">
+                                                                <i class="fa-solid fa-cloud-arrow-up fs-1 text-secondary"></i>
+                                                                <p class="mb-1 mt-2">Drag & drop your image here</p>
+                                                                <small class="text-muted">or click to select</small>
+                                                            </div>
+
+                                                            <input
+                                                                type="file"
+                                                                class="image-input"
+                                                                name="image"
+                                                                accept="image/*"
+                                                                hidden>
+
+                                                            <div class="preview-content d-none mt-3">
+                                                                <img
+                                                                    class="image-preview img-fluid rounded"
+                                                                    src=""
+                                                                    alt="Image Preview"
+                                                                    style="max-height: 250px; display: none;">
+
+                                                                <div class="mt-2 d-flex justify-content-center align-items-center gap-2">
+                                                                    <span class="image-name small text-truncate"></span>
+                                                                    <span class="image-size small text-muted"></span>
+                                                                    <button type="button" class="remove-image btn btn-sm btn-outline-danger">
+                                                                        <i class="fa-solid fa-xmark"></i> Remove
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="col-12">
                                                         <label for="content" class="form-label">Content</label>
@@ -73,3 +131,4 @@
         <%- contentFor('FooterJs') %>
             <script src="/assets/js/main/tinymce.js"></script>
             <script src="/assets/js/main/addCommon.js"></script>
+            <script defer src="/assets/js/main/drop-and-drag-img.js"></script>

@@ -20,6 +20,7 @@ export class ArtistController {
 
         if (!artist) {
             res.status(404).json({
+                status: 404,
                 success: false,
                 message: "Artist not found",
             });
