@@ -1,6 +1,8 @@
 import { Artist } from "../modules/artist/artist.model.js";
 import { Album } from "../modules/album/album.model.js";
 import { Song } from "../modules/song/song.model.js";
+import { User } from "../modules/auth/auth.model.js";
+import { UserSession } from "../modules/user-session/user-session.model.js";
 
 Artist.hasMany(Album, { foreignKey: "artistId", as: "albums" });
 Album.belongsTo(Artist, { foreignKey: "artistId", as: "artist" });
@@ -11,7 +13,7 @@ Song.belongsTo(Album, { foreignKey: "albumId", as: "album" });
 Artist.hasMany(Song, { foreignKey: "artistId", as: "songs" });
 Song.belongsTo(Artist, { foreignKey: "artistId", as: "artist" });
 
+User.hasMany(UserSession, { foreignKey: "userId", as: "sessions" });
+UserSession.belongsTo(User, { foreignKey: "userId", as: "user" })
 
-export {
-    Artist, Album, Song
-}
+export { Artist, Album, Song, User, UserSession }

@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { AlbumService } from "./album.service.js";
+import { handleError } from "../../utils/error-handler.utils.js";
+import { AppError } from "../../errors/app.error.js";
 
 export class AlbumController {
     constructor(private readonly service: AlbumService) { }
@@ -32,6 +34,14 @@ export class AlbumController {
 
     create = async (req: Request, res: Response): Promise<void> => {
         try {
+            if (!req.file) {
+                new AppError("Cover image is required", 4000);
+                return
+            }
+            if (!req.file.path) {
+                new AppError("Failed to upload cover image", 400)
+                return
+            }
             await this.service.create({
                 ...req.body,
                 coverImage: req.file?.path,
@@ -41,9 +51,7 @@ export class AlbumController {
             res.redirect("/albums");
 
         } catch (error) {
-
-            req.flash("error", "Failed to Created Album");
-            res.redirect("/albums");
+            handleError(req, res, error, "/albums", "Failed to Created Album")
         }
 
     };

@@ -3,68 +3,92 @@
         <div class="row">
             <div class="col-xl-12">
                 <%- include ('../partials/messages') %>
-                    <%- console.log(data)%>
-                        <form action="/album/update/<%=data.id%>" id="serviceForm" method="post" onsubmit="updateContent(event);" enctype="multipart/form-data">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <div class="flex-grow-1 ms-2">
-                                            <div class="mb-3">
-                                                <div class="card-body">
-                                                    <div class="row gy-4">
-                                                        <div class="col-12">
-                                                            <label for="artistId" class="form-label">Artists</label>
-                                                            <select class="form-select" id="artistId" name="artistId"
-                                                                required>
-                                                                <option value="<%= data.artistId %>" selected disabled>Select...
+                    <form action="/album/update/<%=data.id%>" id="serviceForm" method="post" onsubmit="updateContent(event);" enctype="multipart/form-data">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1 ms-2">
+                                        <div class="mb-3">
+                                            <div class="card-body">
+                                                <div class="row gy-4">
+                                                    <div class="col-12">
+                                                        <label for="artistId" class="form-label">Artists</label>
+                                                        <select class="form-select" id="artistId" name="artistId"
+                                                            required>
+                                                            <option value="<%= data.artistId %>" selected disabled>Select...
+                                                            </option>
+                                                            <% artists.forEach(function(artist) { %>
+                                                                <option value="<%= artist.id %>"
+                                                                    <%=data.artistId===artist.id ? 'selected'
+                                                                    : '' %>><%= artist.name %>
                                                                 </option>
-                                                                <% artists.forEach(function(artist) { %>
-                                                                    <option value="<%= artist.id %>"
-                                                                        <%=data.artistId===artist.id ? 'selected'
-                                                                        : '' %>><%= artist.name %>
-                                                                    </option>
-                                                                    <% }); %>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="title" class="form-label">title</label>
-                                                            <input type="text" class="form-control" id="title" name="title" value="<%=data.title%>"
-                                                                required>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="slug" class="form-label">Slug</label>
-                                                            <input type="text" class="form-control" id="slug" name="slug" value="<%=data.slug%>"
-                                                                required>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <label for="image" class="form-label">
-                                                                Cover Image</label>
-                                                            <input type="file" class="form-control" id="coverImage" name="coverImage"
-                                                                accept="image/*" onchange="previewImage(event)">
-                                                            <img id="imagePreview" src="#" alt="Image Preview"
-                                                                class="d-none mt-2 w-25 img-fluid" />
-                                                        </div>
-                                                        <div class="d-flex flex-column gap-8">
-                                                            <label for="image" class="form-label">Currnet
-                                                                Image</label>
-                                                            <img src="/<%=data.coverImage%>" alt="" height="100px"
-                                                                width="100px" class="img-fluid w-25">
+                                                                <% }); %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="title" class="form-label">title</label>
+                                                        <input type="text" class="form-control" id="title" name="title" value="<%=data.title%>"
+                                                            required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="slug" class="form-label">Slug</label>
+                                                        <input type="text" class="form-control" id="slug" name="slug" value="<%=data.slug%>"
+                                                            required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="coverImage">Cover Image</label>
+                                                        <div
+                                                            class="drop-image border border-2 border-secondary border-dashed rounded p-4 text-center"
+                                                            data-name="coverImage"
+                                                            data-existing-image="/<%=data.coverImage%>"
+                                                            style="cursor: pointer;">
+
+                                                            <div class="upload-content">
+                                                                <i class="bi bi-cloud-upload text-secondary" style="font-size: 4rem;"></i>
+                                                                <p class="mb-1 mt-2">Drag & drop your image here</p>
+                                                                <small class="text-muted">or click to select</small>
+                                                            </div>
+
+                                                            <input
+                                                                type="file"
+                                                                class="image-input"
+                                                                name="coverImage"
+                                                                accept="image/*"
+                                                                hidden>
+
+                                                            <div class="preview-content d-none mt-3">
+                                                                <img
+                                                                    class="image-preview img-fluid rounded"
+                                                                    src=""
+                                                                    alt="Image Preview"
+                                                                    style="max-height: 250px; display: none;">
+
+                                                                <div class="mt-2 d-flex justify-content-center align-items-center gap-2">
+                                                                    <span class="image-name small text-truncate"></span>
+                                                                    <span class="image-size small text-muted"></span>
+                                                                    <button type="button" class="remove-image btn btn-sm btn-outline-danger">
+                                                                        <i class="fa-solid fa-xmark"></i> Remove
+                                                                    </button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
+
                             </div>
-                            <div class="card card-body">
-                                <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="card card-body">
+                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+                        </div>
+                    </form>
             </div><!-- end col -->
         </div><!-- end row -->
 
         <%- contentFor('FooterJs') %>
             <script src="/assets/js/main/tinymce.js"></script>
             <script src="/assets/js/main/addCommon.js"></script>
+            <script defer src="/assets/js/main/drop-and-drag-img.js"></script>

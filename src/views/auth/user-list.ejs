@@ -84,11 +84,15 @@
                                                                 <span class="badge rounded-pill text-bg-info">
                                                                     <%= user.role %>
                                                                 </span>
-                                                                <%}else{%>
-                                                                    <span class="badge rounded-pill text-bg-secondary">
+                                                                <%}else if(user.role==='staff' ){%>
+                                                                    <span class="badge rounded-pill text-bg-warning">
                                                                         <%= user.role %>
                                                                     </span>
-                                                                    <%}%>
+                                                                    <%}else {%>
+                                                                        <span class="badge rounded-pill text-bg-secondary">
+                                                                            <%= user.role %>
+                                                                        </span>
+                                                                        <%}%>
                                                         </td>
                                                         <td class="role">
                                                             <%if(user.isActive ){%>

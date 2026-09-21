@@ -2,7 +2,7 @@ import { Router } from "express";
 import { ArtistController } from "./artist.controller.js";
 import { ArtistService } from "./artist.service.js";
 import { ArtistRepository } from "./artist.repository.js";
-import { artistUpload } from "../../middlewares/multer-config.js";
+import { artistUpload } from "../../config/multer.config.js";
 
 const artistRoute = Router()
 const artistController = new ArtistController(new ArtistService(new ArtistRepository))

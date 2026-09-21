@@ -34,14 +34,42 @@
                                                         <input type="text" class="form-control" id="slug" name="slug"
                                                             required>
                                                     </div>
-
                                                     <div class="col-12">
-                                                        <label for="coverImage" class="form-label">
-                                                            Image</label>
-                                                        <input type="file" class="form-control" id="coverImage" name="coverImage"
-                                                            accept="image/*" onchange="previewImage(event)">
-                                                        <img id="imagePreview" src="#" alt="Image Preview"
-                                                            class="d-none mt-2 w-25 img-fluid" />
+                                                        <label for="coverImage">Cover Image</label>
+                                                        <div
+                                                            class="drop-image border border-2 border-secondary border-dashed rounded p-4 text-center"
+                                                            data-name="coverImage"
+                                                            style="cursor: pointer;">
+
+                                                            <div class="upload-content">
+                                                                <i class="bi bi-cloud-upload text-secondary" style="font-size: 4rem;"></i>
+                                                                <p class="mb-1 mt-2">Drag & drop your image here</p>
+                                                                <small class="text-muted">or click to select</small>
+                                                            </div>
+
+                                                            <input
+                                                                type="file"
+                                                                class="image-input"
+                                                                name="coverImage"
+                                                                accept="image/*"
+                                                                hidden>
+
+                                                            <div class="preview-content d-none mt-3">
+                                                                <img
+                                                                    class="image-preview img-fluid rounded"
+                                                                    src=""
+                                                                    alt="Image Preview"
+                                                                    style="max-height: 250px; display: none;">
+
+                                                                <div class="mt-2 d-flex justify-content-center align-items-center gap-2">
+                                                                    <span class="image-name small text-truncate"></span>
+                                                                    <span class="image-size small text-muted"></span>
+                                                                    <button type="button" class="remove-image btn btn-sm btn-outline-danger">
+                                                                        <i class="fa-solid fa-xmark"></i> Remove
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,3 +89,4 @@
         <%- contentFor('FooterJs') %>
             <script src="/assets/js/main/tinymce.js"></script>
             <script src="/assets/js/main/addCommon.js"></script>
+            <script defer src="/assets/js/main/drop-and-drag-img.js"></script>

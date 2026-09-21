@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { songUpload } from "../../middlewares/multer-config.js";
+import { songUpload } from "../../config/multer.config.js";
 import { SongRepository } from "./song.repository.js";
 import { SongService } from "./song.service.js";
 import { SongController } from "./song.controller.js";

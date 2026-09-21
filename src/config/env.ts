@@ -22,6 +22,11 @@ type ENV = {
     MAIL_USER: string
     MAIL_PASSWORD: string
     MAIL_FROM: string
+
+    JWT_ACCESS_SECRET: string;
+    JWT_REFRESH_SECRET: string
+    JWT_ACCESS_EXPIRES_IN: number
+    JWT_REFRESH_EXPIRES_IN: number
 };
 
 const env: ENV = {
@@ -43,11 +48,18 @@ const env: ENV = {
     // Redis
     REDIS_URL: process.env.REDIS_URL || "redis://localhost:6379",
 
+    // STMP mail 
     MAIL_HOST: process.env.MAIL_HOST || 'some',
     MAIL_PORT: Number(process.env.MAIL_PORT) || 57,
     MAIL_USER: process.env.MAIL_USER || "",
     MAIL_PASSWORD: process.env.MAIL_PASSWORD || '',
     MAIL_FROM: process.env.MAIL_FROM || '',
+
+    // jwt
+    JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET || "UHAVWEFHAWEB",
+    JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || "HABJEWFWEB",
+    JWT_ACCESS_EXPIRES_IN: Number(process.env.JWT_ACCESS_EXPIRES_IN) || 900,
+    JWT_REFRESH_EXPIRES_IN: Number(process.env.JWT_REFRESH_EXPIRES_IN) || 604800
 };
 
 export default env;

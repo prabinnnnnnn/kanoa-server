@@ -1,4 +1,4 @@
-import { mailTransporter } from "../../config/mail.js";
+import { mailTransporter } from "../../config/mail.config.js";
 import { AppError } from "../../errors/app.error.js";
 import { EmailService } from "../../services/email.service.js";
 import { User } from "./auth.model.js";
@@ -66,6 +66,13 @@ export class AuthService {
 
     async login(email: string, password: string): Promise<User | null> {
         const user = await this.repository.getUserByEmail(email);
+
+        if (!user?.isActive) {
+            throw new AppError(
+                "Account is inactive or invalid",
+                400,
+            );
+        }
 
         if (!user?.isEmailVerified) {
             throw new AppError(

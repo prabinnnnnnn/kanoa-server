@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service.js";
-import { handleError } from "../../utils/error-handler.js";
+import { handleError } from "../../utils/error-handler.utils.js";
 import bcrypt from "bcrypt"
 import { AppError } from "../../errors/app.error.js";
 
@@ -174,9 +174,6 @@ export class AuthController {
     changePassword = async (req: Request, res: Response): Promise<void> => {
         const { oldPassword, newPassword } = req.body;
 
-        console.log("oldpassword", oldPassword)
-        console.log("newPassword", newPassword)
-
         const userId = req.session.user?.id;
 
 
@@ -191,8 +188,6 @@ export class AuthController {
         }
 
         const user = await this.service.getById(userId);
-
-        console.log(user)
 
         if (!user) {
             req.flash('error', 'User not found');

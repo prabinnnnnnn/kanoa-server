@@ -4,114 +4,177 @@
             <div class="col-xl-12">
                 <%- include ('../partials/messages') %>
                     <form action="/song/update/<%=data.id%>" method="post" enctype="multipart/form-data">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <div class="flex-grow-1 ms-2">
-                                        <div class="mb-3">
-                                            <div class="card-body">
-                                                <div class="row gy-4">
-                                                    <div class="col-6">
-                                                        <label for="artistId" class="form-label">Artist</label>
-                                                        <select class="form-select" id="artistId" name="artistId"
-                                                            required>
-                                                            <option value="<%= data.artistId %>" selected disabled>Select...
-                                                            </option>
-                                                            <% artists.forEach(function(artist) { %>
-                                                                <option value="<%= artist.id %>"
-                                                                    <%=data.artistId===artist.id ? 'selected'
-                                                                    : '' %>><%= artist.name %>
+                        <%=console.log(data)%>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ms-2">
+                                            <div class="mb-3">
+                                                <div class="card-body">
+                                                    <div class="row gy-4">
+                                                        <div class="col-6">
+                                                            <label for="artistId" class="form-label">Artist</label>
+                                                            <select class="form-select" id="artistId" name="artistId"
+                                                                required>
+                                                                <option value="<%= data.artistId %>" selected disabled>Select...
                                                                 </option>
-                                                                <% }); %>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <label for="albumId" class="form-label">Album</label>
-                                                        <select class="form-select" id="albumId" name="albumId"
-                                                            required>
-                                                            <option value="<%= data.albumId %>" selected disabled>Select...
-                                                            </option>
-                                                            <% albums.forEach(function(album) { %>
-                                                                <option value="<%= album.id %>"
-                                                                    <%=data.albumId===album.id ? 'selected'
-                                                                    : '' %>><%= album.title %>
+                                                                <% artists.forEach(function(artist) { %>
+                                                                    <option value="<%= artist.id %>"
+                                                                        <%=data.artistId===artist.id ? 'selected'
+                                                                        : '' %>><%= artist.name %>
+                                                                    </option>
+                                                                    <% }); %>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="albumId" class="form-label">Album</label>
+                                                            <select class="form-select" id="albumId" name="albumId"
+                                                                required>
+                                                                <option value="<%= data.albumId %>" selected disabled>Select...
                                                                 </option>
-                                                                <% }); %>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="title" class="form-label">Title</label>
-                                                        <input type="text" class="form-control" id="title" name="title" value="<%=data.title%>"
-                                                            required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="slug" class="form-label">Slug</label>
-                                                        <input type="text" class="form-control" id="slug" name="slug" value="<%=data.slug%>" required>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <label for="audioUrl" class="form-label">Audio URL</label>
-                                                        <textarea name="audioUrl" id="audioUrl" class="form-control" rows="5">value="<%=data.audioUrl%>"</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="isPopular" class="form-label">Popular?</label>
-
-                                                        <div class="form-check form-switch">
-                                                            <input
-                                                                type="checkbox"
-                                                                class="form-check-input"
-                                                                id="isPopular"
-                                                                name="isPopular"
-                                                                <%=data.isPopular ? "checked" : "" %>
-                                                            >
+                                                                <% albums.forEach(function(album) { %>
+                                                                    <option value="<%= album.id %>"
+                                                                        <%=data.albumId===album.id ? 'selected'
+                                                                        : '' %>><%= album.title %>
+                                                                    </option>
+                                                                    <% }); %>
+                                                            </select>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <label for="isTrending" class="form-label">Trending?</label>
-
-                                                        <div class="form-check form-switch">
-                                                            <input
-                                                                type="checkbox"
-                                                                class="form-check-input"
-                                                                id="isTrending"
-                                                                name="isTrending"
-                                                                <%=data.isTrending ? "checked" : "" %>
-                                                            >
+                                                        <div class="col-md-6">
+                                                            <label for="title" class="form-label">Title</label>
+                                                            <input type="text" class="form-control" id="title" name="title" value="<%=data.title%>"
+                                                                required>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <label for="image" class="form-label">
-                                                            Image</label>
-                                                        <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="image" class="form-label">Current Image</label>
-                                                        <img id="imagePreview" src="/<%=data.image%>" alt="Image Preview" style="height: 100px; width: 100px; object-fit: cover;" class="mt-2 w-10 img-fluid" />
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <label for="coverImage" class="form-label"> Cover Image</label>
-                                                        <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*" onchange="previewImage(event)">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="coverImage" class="form-label">Current Cover Image</label>
-                                                        <img id="imagePreview" src="/<%=data.coverImage%>" alt="Image Preview" style="height: 100px; width: 100px; object-fit: cover;" class="mt-2 w-10 img-fluid" />
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <label for="content" class="form-label">Content</label>
-                                                        <textarea name="content" id="content" class="form-control"
-                                                            rows="5"><%=data.content%></textarea>
+                                                        <div class="col-md-6">
+                                                            <label for="slug" class="form-label">Slug</label>
+                                                            <input type="text" class="form-control" id="slug" name="slug" value="<%=data.slug%>" required>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="audioUrl" class="form-label">Audio URL</label>
+                                                            <textarea name="audioUrl" id="audioUrl" class="form-control" rows="5"><%=data.audioUrl%></textarea>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="isPopular" class="form-label">Popular?</label>
+
+                                                            <div class="form-check form-switch">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    class="form-check-input"
+                                                                    id="isPopular"
+                                                                    name="isPopular"
+                                                                    <%=data.isPopular ? "checked" : "" %>
+                                                                >
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <label for="isTrending" class="form-label">Trending?</label>
+
+                                                            <div class="form-check form-switch">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    class="form-check-input"
+                                                                    id="isTrending"
+                                                                    name="isTrending"
+                                                                    <%=data.isTrending ? "checked" : "" %>
+                                                                >
+                                                            </div>
+                                                        </div>
+                                                        <!-- Cover Image -->
+                                                        <div class="col-12">
+                                                            <label for="coverImage">Cover Image</label>
+                                                            <div
+                                                                class="drop-image border border-2 border-secondary border-dashed rounded p-4 text-center"
+                                                                data-name="coverImage"
+                                                                data-existing-image="/<%=data.coverImage%>"
+                                                                style="cursor: pointer;">
+
+                                                                <div class="upload-content">
+                                                                    <i class="fa-solid fa-cloud-arrow-up fs-1 text-secondary"></i>
+                                                                    <p class="mb-1 mt-2">Drag & drop your image here</p>
+                                                                    <small class="text-muted">or click to select</small>
+                                                                </div>
+
+                                                                <input
+                                                                    type="file"
+                                                                    class="image-input"
+                                                                    name="coverImage"
+                                                                    accept="image/*"
+                                                                    hidden>
+
+                                                                <div class="preview-content d-none mt-3">
+                                                                    <img
+                                                                        class="image-preview img-fluid rounded"
+                                                                        src=""
+                                                                        alt="Image Preview"
+                                                                        style="max-height: 250px; display: none;">
+
+                                                                    <div class="mt-2 d-flex justify-content-center align-items-center gap-2">
+                                                                        <span class="image-name small text-truncate"></span>
+                                                                        <span class="image-size small text-muted"></span>
+                                                                        <button type="button" class="remove-image btn btn-sm btn-outline-danger">
+                                                                            <i class="fa-solid fa-xmark"></i> Remove
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Image -->
+                                                        <div class="col-12">
+                                                            <label for="image">Image</label>
+                                                            <div
+                                                                class="drop-image border border-2 border-secondary border-dashed rounded p-4 text-center"
+                                                                data-name="image"
+                                                                data-existing-image="/<%=data.image%>"
+                                                                style="cursor: pointer;">
+
+                                                                <div class="upload-content">
+                                                                    <i class="fa-solid fa-cloud-arrow-up fs-1 text-secondary"></i>
+                                                                    <p class="mb-1 mt-2">Drag & drop your image here</p>
+                                                                    <small class="text-muted">or click to select</small>
+                                                                </div>
+
+                                                                <input
+                                                                    type="file"
+                                                                    class="image-input"
+                                                                    name="image"
+                                                                    accept="image/*"
+                                                                    hidden>
+
+                                                                <div class="preview-content d-none mt-3">
+                                                                    <img
+                                                                        class="image-preview img-fluid rounded"
+                                                                        src=""
+                                                                        alt="Image Preview"
+                                                                        style="max-height: 250px; display: none;">
+
+                                                                    <div class="mt-2 d-flex justify-content-center align-items-center gap-2">
+                                                                        <span class="image-name small text-truncate"></span>
+                                                                        <span class="image-size small text-muted"></span>
+                                                                        <button type="button" class="remove-image btn btn-sm btn-outline-danger">
+                                                                            <i class="fa-solid fa-xmark"></i> Remove
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="content" class="form-label">Content</label>
+                                                            <textarea name="content" id="content" class="form-control"
+                                                                rows="5"><%=data.content%></textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="card card-body">
-                            <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
-                        </div>
+                            <div class="card card-body">
+                                <button type="submit" class="btn btn-secondary waves-effect col-md-3">Submit</button>
+                            </div>
                     </form>
             </div><!-- end col -->
         </div><!-- end row -->
@@ -119,3 +182,4 @@
         <%- contentFor('FooterJs') %>
             <script src="/assets/js/main/tinymce.js"></script>
             <script src="/assets/js/main/addCommon.js"></script>
+            <script defer src="/assets/js/main/drop-and-drag-img.js"></script>

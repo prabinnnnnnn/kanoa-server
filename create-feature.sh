@@ -14,6 +14,7 @@ mkdir -p "$FEATURE_DIR"
 touch \
     "$FEATURE_DIR/$FEATURE.controller.ts" \
     "$FEATURE_DIR/$FEATURE.service.ts" \
+    "$FEATURE_DIR/$FEATURE.repository.ts" \
     "$FEATURE_DIR/$FEATURE.routes.ts" \
     "$FEATURE_DIR/$FEATURE.validation.ts" \
     "$FEATURE_DIR/$FEATURE.types.ts" \

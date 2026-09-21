@@ -1,5 +1,5 @@
 import env from "../config/env.js";
-import { mailTransporter } from "../config/mail.js";
+import { mailTransporter } from "../config/mail.config.js";
 
 export class EmailService {
     async sendVerificationEmail(email: string, token: string): Promise<void> {

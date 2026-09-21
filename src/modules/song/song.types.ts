@@ -8,6 +8,7 @@ export interface SongAttributes {
     coverImage: string | null;
     isPopular: boolean;
     isTrending: boolean;
+    content: string;
     albumId: string;
     artistId: string;
 }
@@ -21,6 +22,7 @@ export interface SongCreationAttributes {
     coverImage?: string | null;
     isPopular: boolean;
     isTrending: boolean;
+    content: string;
     albumId: string;
     artistId: string;
 }
@@ -34,6 +36,7 @@ export interface SongUpdateAttributes {
     coverImage?: string | null;
     isPopular: boolean;
     isTrending: boolean;
+    content: string;
     albumId: string;
     artistId: string;
 }

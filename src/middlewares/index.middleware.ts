@@ -6,7 +6,7 @@ import expressLayouts from "express-ejs-layouts";
 
 import { corsOptions } from "../config/cors.js";
 import { sessionMiddleware } from "../config/session.js";
-import { staticMiddleware } from "./static-middleware.js";
+import { staticMiddleware } from "./static.middleware.js";
 import env from "../config/env.js";
 
 export const registerMiddlewares = (app: Express) => {

@@ -1,8 +1,8 @@
 import { Router } from "express"
-import pageRouter from "./page-route.js"
+import pageRouter from "./page.route.js"
 import albumRoute from "../modules/album/album.routes.js";
 import artistRoute from "../modules/artist/artist.routes.js";
-import apiRouter from "./api-route.js";
+import apiRouter from "./api.route.js";
 import songRoute from "../modules/song/song.routes.js";
 import authRouter from "../modules/auth/auth.routes.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";

@@ -10,6 +10,7 @@ export class Song extends Model<InferAttributes<Song>, InferCreationAttributes<S
     declare audioUrl: string;
     declare coverImage: string | null;
     declare image: string | null;
+    declare content: string;
     declare isPopular: boolean;
     declare isTrending: boolean;
     declare albumId: string;
@@ -54,6 +55,10 @@ Song.init(
         isTrending: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        content: {
+            type: DataTypes.TEXT('long'),
+            allowNull: true
         },
         albumId: {
             type: DataTypes.UUID,
