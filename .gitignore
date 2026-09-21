@@ -2,6 +2,7 @@
 package-lock.json
 /migrations
 /uploads
+/test
 .env
 .env.*
 !.env.example
