@@ -1,14 +1,34 @@
 import { UserSession } from "./user-session.model.js";
-import { UserSessionCreationAttributes } from "./user-session.types.js";
+import { CreateUserSessionInput } from "./user-session.types.js";
 
 export class UserSessionRepository {
 
-    async create(data: UserSessionCreationAttributes): Promise<UserSession> {
+    async create(data: CreateUserSessionInput): Promise<UserSession> {
         return UserSession.create(data);
     }
 
     async findById(id: string): Promise<UserSession | null> {
-        return UserSession.findByPk(id);
+        console.log("Searching session ID:", id);
+
+        const session = await UserSession.findOne({
+            where: {
+                id,
+            },
+        });
+
+        console.log("Database session:", session);
+
+        return session;
+    }
+
+    async findByIdWithUser(id: string): Promise<UserSession | null> {
+        return UserSession.findByPk(id, {
+            include: [
+                {
+                    association: "user",
+                },
+            ],
+        });
     }
 
     async findByUserId(userId: string): Promise<UserSession[]> {
@@ -22,9 +42,7 @@ export class UserSessionRepository {
 
     async revoke(id: string): Promise<[affectedCount: number]> {
         return UserSession.update(
-            {
-                revokedAt: new Date(),
-            },
+            { revokedAt: new Date() },
             {
                 where: {
                     id,

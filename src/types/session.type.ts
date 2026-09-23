@@ -11,7 +11,7 @@ interface SessionUser {
 declare module "express-session" {
     interface SessionData {
         user?: SessionUser;
-        ip?: string;
-        userAgent?: string;
+        ip: string | null;
+        userAgent: string | null;
     }
 }

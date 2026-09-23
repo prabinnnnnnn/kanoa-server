@@ -12,6 +12,9 @@ FEATURE_DIR="src/modules/$FEATURE"
 mkdir -p "$FEATURE_DIR"
 
 touch \
+    "$FEATURE_DIR/$FEATURE.api.controller.ts" \
+    "$FEATURE_DIR/$FEATURE.api.routes.ts" \
+    "$FEATURE_DIR/$FEATURE.cache.ts" \
     "$FEATURE_DIR/$FEATURE.controller.ts" \
     "$FEATURE_DIR/$FEATURE.service.ts" \
     "$FEATURE_DIR/$FEATURE.repository.ts" \

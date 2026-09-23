@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthService } from "./auth.service.js";
 import { handleError } from "../../utils/error-handler.utils.js";
 import bcrypt from "bcrypt"
-import { AppError } from "../../errors/app.error.js";
+import { refreshTokenCookieOptions } from "../../config/cookies.config.js";
 
 export class AuthController {
     constructor(private readonly service: AuthService) { }
@@ -78,67 +78,118 @@ export class AuthController {
             const { email, password } = req.body;
 
             if (!email || !password) {
-                req.flash("error", "Email and password are required");
+                req.flash(
+                    "error",
+                    "Email and password are required"
+                );
 
                 res.redirect("/auth/login");
                 return;
             }
 
+            const userAgent =
+                req.headers["user-agent"] ?? null;
 
-            const user = await this.service.login(email, password);
+            const ipAddress = req.ip ?? null;
 
-            if (!user) {
-                req.flash("error", "User not found");
+            const result = await this.service.login(
+                email,
+                password,
+                userAgent,
+                ipAddress
+            );
 
-                res.redirect("/auth/login");
-                return;
-            }
+            res.cookie(
+                "refreshToken",
+                result.refreshToken,
+                refreshTokenCookieOptions
+            );
 
             req.session.regenerate((error) => {
                 if (error) {
-                    console.error("Session regeneration error:", error);
+                    console.error(
+                        "Session regeneration error:",
+                        error
+                    );
 
-                    req.flash("error", "Unable to login. Please try again.");
+                    req.flash(
+                        "error",
+                        "Unable to login. Please try again."
+                    );
+
                     res.redirect("/auth/login");
                     return;
                 }
 
                 req.session.user = {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role,
+                    id: result.user.id,
+                    name: result.user.name,
+                    email: result.user.email,
+                    role: result.user.role,
                 };
 
-                req.session.ip = req.ip;
+                req.session.ip = ipAddress;
+                req.session.userAgent = userAgent;
 
-                req.session.userAgent =
-                    req.headers["user-agent"];
-
-                req.flash("success", `Welcome ${user.name}`);
+                req.flash(
+                    "success",
+                    `Welcome ${result.user.name}`
+                );
 
                 res.redirect("/");
             });
         } catch (error) {
-            handleError(req, res, error, "/auth/login", "Something went wrong. Please try again.")
-            console.error("Login error:", error);
+            handleError(
+                req,
+                res,
+                error,
+                "/auth/login",
+                "Something went wrong. Please try again."
+            );
+
+            console.error(
+                "Login error:",
+                error
+            );
         }
     };
 
-    logout = async (req: Request, res: Response) => {
-        req.session.destroy((error) => {
-            if (error) {
-                console.error(
-                    "Session destroy error:",
-                    error,
-                );
+    logout = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const refreshToken = req.cookies.refreshToken;
 
-                res.redirect("/");
-                return;
+            console.log("Logout called");
+            console.log("Refresh token exists:", !!refreshToken);
+            console.log("Refresh token:", refreshToken);
+
+            if (refreshToken) {
+                await this.service.logout(refreshToken);
+                console.log("JWT session revoked");
+            } else {
+                console.log("No refresh token found");
             }
+
+            req.session.destroy((error) => {
+                if (error) {
+                    console.error(
+                        "Session destroy error:",
+                        error
+                    );
+                }
+            });
+
+            res.clearCookie(
+                "refreshToken",
+                refreshTokenCookieOptions
+            );
+
             res.redirect("/auth/login");
-        });
-    }
+        } catch (error) {
+            console.error("Logout error:", error);
+
+            res.redirect("/auth/login");
+        }
+    };
 
     delete = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
         try {
@@ -209,4 +260,43 @@ export class AuthController {
         req.flash('success', 'Password reset successfully');
         this.logout(req, res)
     }
+
+    refresh = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const refreshToken =
+                req.cookies.refreshToken;
+
+            if (!refreshToken) {
+                res.status(401).json({
+                    message: "Refresh token not found",
+                });
+                return;
+            }
+
+            const userAgent = req.headers["user-agent"] ?? null;
+
+            const ipAddress = req.ip ?? null;
+
+            const result = await this.service.refresh(
+                refreshToken,
+                userAgent,
+                ipAddress
+            );
+
+            // IMPORTANT
+            res.cookie(
+                "refreshToken",
+                result.refreshToken,
+                refreshTokenCookieOptions
+            );
+
+            res.status(200).json({
+                accessToken: result.accessToken,
+            });
+        } catch (error) {
+            handleError(req, res, error, "/auth/login", "Unable to refresh access token");
+
+            console.error("Refresh token error:", error);
+        }
+    };
 }

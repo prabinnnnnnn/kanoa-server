@@ -7,12 +7,17 @@ import expressLayouts from "express-ejs-layouts";
 import { corsOptions } from "../config/cors.js";
 import { sessionMiddleware } from "../config/session.js";
 import { staticMiddleware } from "./static.middleware.js";
+import cookieParser from "cookie-parser";
+
 import env from "../config/env.js";
+import { requestId } from "../config/request.ID.js";
 
 export const registerMiddlewares = (app: Express) => {
     // Body parser
+    app.use(cookieParser());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+    app.use(requestId)
 
     // Session
     app.use(sessionMiddleware);

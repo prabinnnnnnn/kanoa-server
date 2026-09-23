@@ -5,52 +5,6 @@ export class ArtistController {
 
     constructor(private readonly service: ArtistService) { }
 
-    getAll = async (req: Request, res: Response): Promise<void> => {
-        const artists = await this.service.getAll();
-
-        res.status(200).json({
-            success: true,
-            data: artists,
-            message: "Artists retrieved successfully",
-        });
-    };
-
-    getById = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
-        const artist = await this.service.getById(req.params.id);
-
-        if (!artist) {
-            res.status(404).json({
-                status: 404,
-                success: false,
-                message: "Artist not found",
-            });
-            return;
-        }
-
-        res.status(200).json({
-            success: true,
-            data: artist,
-        });
-    };
-
-    getBySlug = async (req: Request<{ slug: string }>, res: Response): Promise<void> => {
-        const { slug } = req.params
-        const artist = await this.service.getBySlug(slug);
-
-        if (!artist) {
-            res.status(404).json({
-                success: false,
-                message: "Artist not found",
-            });
-            return;
-        }
-
-        res.status(200).json({
-            success: true,
-            data: artist,
-        });
-    };
-
     create = async (req: Request, res: Response): Promise<void> => {
 
         try {

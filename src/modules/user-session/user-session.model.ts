@@ -1,5 +1,6 @@
 import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
 import { db } from "../../config/db.js";
+import { User } from "../auth/auth.model.js";
 
 export class UserSession extends Model<InferAttributes<UserSession>, InferCreationAttributes<UserSession>> {
     declare id: CreationOptional<string>;
@@ -13,6 +14,7 @@ export class UserSession extends Model<InferAttributes<UserSession>, InferCreati
 
     declare expiresAt: Date;
     declare revokedAt: Date | null;
+    declare user?: User;
 }
 
 UserSession.init({

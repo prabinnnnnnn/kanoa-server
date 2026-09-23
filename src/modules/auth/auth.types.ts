@@ -1,3 +1,5 @@
+import { User } from "./auth.model.js";
+
 export enum UserRoleENUM {
     user = "user",
     artist = "artist",
@@ -34,4 +36,20 @@ export interface UserUpdateAttributes {
     role: UserRoleENUM;
     isActive: boolean;
     isEmailVerified: boolean;
+}
+
+export interface LoginInput {
+    email: string;
+    password: string;
+}
+
+export interface LoginResult {
+    user: User;
+    accessToken: string;
+    refreshToken: string;
+}
+
+export interface RefreshResult {
+    accessToken: string;
+    refreshToken: string;
 }

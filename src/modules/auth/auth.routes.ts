@@ -13,5 +13,6 @@ authRouter.post("/login", authController.login)
 authRouter.post("/logout", authController.logout)
 authRouter.post("/users/change-password", authController.changePassword)
 authRouter.post("/users/:id", authController.delete)
+authRouter.post("/refresh", authController.refresh)
 
 export default authRouter;
